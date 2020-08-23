@@ -131,6 +131,9 @@ create table public.ck05_pagamento
 	ck05ck07_cod_carrinho bigint not null
 		constraint ck05ck07_pagamento_carrinho
 			references public.ck07_carrinho_compras,
+	ck05ck03_cod_endereco bigint not null
+	    constraint ck05ck03_cod_endereco_entrega
+	        references public.ck03_endereco,
 	ck05ck04_cod_transportadora bigint not null
 		constraint ck05ck04_pagamento_transportadora
 			references public.ck04_transportadora,
@@ -167,6 +170,42 @@ alter table public.ck08_produto_pedido owner to postgres;
 create unique index ck08_produtos_pedidos_ck08_cod_produtos_pedidos_uindex
 	on public.ck08_produto_pedido (ck08_cod_produto_pedido);
 
+
+create table public.ck10_status_compra
+(
+	ck10_cod_status_compra bigserial not null
+		constraint ck10_status_compra_pk
+			primary key,
+	ck10_descricao varchar(25) not null
+);
+
+alter table public.ck10_status_compra owner to postgres;
+
+create unique index ck10_status_compra_ck10_cod_status_compra_uindex
+	on public.ck10_status_compra (ck10_cod_status_compra);
+
+
+create table public.ck09_compra
+(
+	ck09_cod_compra bigserial not null
+		constraint ck09_compra_pk
+			primary key,
+	ck09_cod_rastreio varchar(13) not null,
+	ck09_numero_pedido varchar(8) not null,
+	ck09ck10_cod_status bigint not null
+	    constraint fkck09ck10_cod_status_compra
+			references public.ck10_status_compra,
+	ck09ck05_cod_pagamento bigint not null
+	    constraint fkck09ck05_compra_pagamento
+	        references public.ck05_pagamento
+);
+
+alter table public.ck09_compra owner to postgres;
+
+create unique index ck09_compra_ck09_cod_compra_uindex
+	on public.ck09_compra (ck09_cod_compra);
+
+
 -- Inserindo os dados:
 
 --Produtos(CK01_PRODUTO):
@@ -182,7 +221,7 @@ INSERT INTO
         (7, 'Refrigerante Guaraná Antartica 2L ', 4.99);
 
 
---Endereco (CK03_ENDERECDO):
+--Endereco (CK03_ENDERECO):
 INSERT INTO
     public.ck03_endereco (ck03_cod_endereco, ck03_rua, ck03_numero, ck03_complemento, ck03_bairro, ck03_cep) VALUES
         (1,'Rua Júpiter', 704, null, 'Raiar do Sol', '69316-042'),
@@ -217,10 +256,10 @@ INSERT INTO public.ck07_carrinho_compras
 
 -- Pagamento (CK05_PAGAMENTO)
 INSERT INTO public.ck05_pagamento
-    (ck05_cod_pagamento, ck05ck06_cod_tipo_pag, ck05ck07_cod_carrinho, ck05ck04_cod_transportadora, ck05_valor_total) VALUES
-        (1, 1, 1, 2, 50.22),
-        (2, 2, 2, 2, 39.05),
-        (3, 2, 3, 1, 27.51);
+    (ck05_cod_pagamento, ck05ck06_cod_tipo_pag, ck05ck07_cod_carrinho, ck05ck03_cod_endereco, ck05ck04_cod_transportadora, ck05_valor_total) VALUES
+        (1, 1, 1, 1, 2, 50.22),
+        (2, 2, 2, 2, 2, 39.05),
+        (3, 2, 3, 3, 1, 27.51);
 
 INSERT INTO public.ck08_produto_pedido
     (ck08_cod_produto_pedido, ck08ck01_cod_produto, ck08_qtd_itens, ck08_valor_total, ck08ck07_cod_carrinho_compras) VALUES
@@ -229,3 +268,15 @@ INSERT INTO public.ck08_produto_pedido
         (3, 2, 1, 15.39, 1),
         (4, 2, 8, 20.4, 2),
         (5, 6, 4, 11.96, 3);
+
+INSERT INTO public.ck10_status_compra
+    (ck10_cod_status_compra, ck10_descricao) VALUES
+        (1, 'ABERTO'),
+        (2, 'EM PROCESSAMENTO'),
+        (3, 'CONCLUÍDO');
+
+INSERT INTO  public.ck09_compra
+    (ck09_cod_compra, ck09_cod_rastreio, ck09_numero_pedido, ck09ck10_cod_status, ck09ck05_cod_pagamento) VALUES
+        (1, 'AA123456789BR', '1111-21', 1, 1),
+        (2, 'AA987654321BR', '21453-01', 2, 2),
+        (3, 'AA100833276BR', '14788-55', 3, 3);
