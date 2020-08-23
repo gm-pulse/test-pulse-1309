@@ -1,5 +1,4 @@
--- DROP DATABASE IF EXISTS checkout;
--- CREATE DATABASE checkout;
+
 GRANT ALL PRIVILEGES ON DATABASE checkout TO postgres;
 
 create table public.ck01_produto
@@ -8,7 +7,7 @@ create table public.ck01_produto
 		constraint ck01_produto_pk
 			primary key,
 	ck01_descricao varchar(255) not null,
-	ck01_valor_unitario double precision not null
+	ck01_valor_unitario numeric not null
 );
 
 alter table public.ck01_produto owner to postgres;
@@ -71,7 +70,7 @@ create table public.ck04_transportadora
 			primary key,
 	ck04_nome varchar(255) not null,
 	ck04_cnpj varchar(14) not null,
-	ck04_valor_frete double precision not null
+	ck04_valor_frete numeric not null
 );
 
 alter table public.ck04_transportadora owner to postgres;
@@ -105,7 +104,7 @@ create table public.ck07_carrinho_compras
 		constraint ck07_carrinho_compras_pk
 			primary key,
 	ck07_total_itens integer not null,
-	ck07_valor_total double precision not null,
+	ck07_valor_total numeric not null,
 	ck07ck02_cod_cliente bigint not null
 		constraint fkck07ck02_carrinho_cliente
 			references public.ck02_cliente
@@ -138,7 +137,7 @@ create table public.ck05_pagamento
 		constraint ck05ck04_pagamento_transportadora
 			references public.ck04_transportadora,
 	-- Only integer types can be auto increment
-	ck05_valor_total double precision not null
+	ck05_valor_total numeric not null
 );
 
 alter table public.ck05_pagamento owner to postgres;
@@ -159,7 +158,7 @@ create table public.ck08_produto_pedido
 		constraint fkck08ck01_produto_pedidos
 			references public.ck01_produto,
 	ck08_qtd_itens integer not null,
-	ck08_valor_total double precision not null,
+	ck08_valor_total numeric not null,
 	ck08ck07_cod_carrinho_compras bigint not null
 		constraint fkck08ck07_pedido_carrinho
 			references public.ck07_carrinho_compras

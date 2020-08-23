@@ -1,6 +1,7 @@
 package com.pulse.checkout.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "CK01_PRODUTO")
 @SequenceGenerator(name = "CK01_PRODUTO_CK01_COD_PRODUTO_SEQ", sequenceName = "CK01_PRODUTO_CK01_COD_PRODUTO_SEQ", allocationSize = 1)
