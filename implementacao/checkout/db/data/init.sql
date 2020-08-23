@@ -105,6 +105,7 @@ create table public.ck07_carrinho_compras
 		constraint ck07_carrinho_compras_pk
 			primary key,
 	ck07_total_itens integer not null,
+	ck07_valor_total double precision not null,
 	ck07ck02_cod_cliente bigint not null
 		constraint fkck07ck02_carrinho_cliente
 			references public.ck02_cliente
@@ -166,9 +167,6 @@ alter table public.ck08_produto_pedido owner to postgres;
 create unique index ck08_produtos_pedidos_ck08_cod_produtos_pedidos_uindex
 	on public.ck08_produto_pedido (ck08_cod_produto_pedido);
 
-create sequence IF NOT EXISTS public.ck08_produtos_pedidos_ck08_cod_produtos_pedidos_seq;
-    alter sequence public.ck08_produtos_pedidos_ck08_cod_produtos_pedidos_seq owner to postgres;
-
 -- Inserindo os dados:
 
 --Produtos(CK01_PRODUTO):
@@ -212,17 +210,17 @@ INSERT INTO
 
 -- CarrinhoCompras (CK01_CARRINHO_COMPRAS)
 INSERT INTO public.ck07_carrinho_compras
-    (ck07_cod_carrinho_compras, ck07_total_itens, ck07ck02_cod_cliente) VALUES
-        (1, 0, 1),
-        (2, 0, 2),
-        (3, 0, 3);
+    (ck07_cod_carrinho_compras, ck07_total_itens, ck07_valor_total, ck07ck02_cod_cliente) VALUES
+        (1, 3, 31.57, 1),
+        (2, 1, 20.40, 2),
+        (3, 1, 11.96, 3);
 
 -- Pagamento (CK05_PAGAMENTO)
 INSERT INTO public.ck05_pagamento
     (ck05_cod_pagamento, ck05ck06_cod_tipo_pag, ck05ck07_cod_carrinho, ck05ck04_cod_transportadora, ck05_valor_total) VALUES
-        (1, 1, 1, 2, 31.57),
-        (2, 2, 2, 2, 20.4),
-        (3, 2, 3, 1, 11.96);
+        (1, 1, 1, 2, 50.22),
+        (2, 2, 2, 2, 39.05),
+        (3, 2, 3, 1, 27.51);
 
 INSERT INTO public.ck08_produto_pedido
     (ck08_cod_produto_pedido, ck08ck01_cod_produto, ck08_qtd_itens, ck08_valor_total, ck08ck07_cod_carrinho_compras) VALUES
