@@ -38,12 +38,12 @@ public class ClienteService {
 
     public Cliente buscaPorId(Long id) {
         return clienteRepository.findById(id)
-                .orElseThrow(() -> new CheckoutCustomException("Cliente com " + id + " inexiste no banco"));
+                .orElseThrow(() -> new CheckoutCustomException("Cliente com " + id + " inexistente no banco"));
     }
 
     public Cliente buscaPorCpf(String cpf) {
         return clienteRepository.findByCpf(cpf)
-                .orElseThrow(() -> new CheckoutCustomException("Cliente com " + cpf + " inexiste no banco"));
+                .orElseThrow(() -> new CheckoutCustomException("Cliente com " + cpf + " inexistente no banco"));
     }
 
     private void verificaCpfJaCadastrado(String cpf) {

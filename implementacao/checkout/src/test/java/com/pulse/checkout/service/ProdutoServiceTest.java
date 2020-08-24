@@ -31,14 +31,14 @@ public class ProdutoServiceTest {
 
     @BeforeEach
     public void criaProduto(){
-        produto = new Produto().builder().id(1L).descricao("Caderno Tilibra").valorUnitario(new BigDecimal("15.0")).build();
+        produto = Produto.builder().id(1L).descricao("Caderno Tilibra").valorUnitario(new BigDecimal("15.0")).build();
     }
 
     @Test
     public void retornaProdutoSalvo_AoSalvarProduto(){
         when(produtoRepository.save(any(Produto.class))).thenReturn(produto);
 
-        Produto novoProduto = produtoService.salvar(new Produto().builder().descricao("Caderno Tilibra").valorUnitario(new BigDecimal("15.0")).build());
+        Produto novoProduto = produtoService.salvar(Produto.builder().descricao("Caderno Tilibra").valorUnitario(new BigDecimal("15.0")).build());
 
         assertEquals(produto.getId(), novoProduto.getId());
 
@@ -46,7 +46,7 @@ public class ProdutoServiceTest {
 
     @Test
     public void retornaProdutoAlterado_AoAlterarProduto(){
-        Produto produtoAAlterar = new Produto().builder().id(1L).descricao("Caderno Tilibras 12 Matérias").valorUnitario(new BigDecimal("15.0")).build();
+        Produto produtoAAlterar = Produto.builder().id(1L).descricao("Caderno Tilibras 12 Matérias").valorUnitario(new BigDecimal("15.0")).build();
 
         when(produtoRepository.findById(any(Long.class))).thenReturn(Optional.of(produto));
         when(produtoRepository.save(any(Produto.class))).thenReturn(produto);
@@ -59,7 +59,7 @@ public class ProdutoServiceTest {
 
     @Test
     public void lancaExcecao_AoAlterarProdutoSemId(){
-        Produto produtoAAlterar = new Produto().builder().descricao("Caderno Tilibras 12 Matérias").valorUnitario(new BigDecimal("15.0")).build();
+        Produto produtoAAlterar = Produto.builder().descricao("Caderno Tilibras 12 Matérias").valorUnitario(new BigDecimal("15.0")).build();
 
         when(produtoRepository.findById(any(Long.class))).thenReturn(Optional.of(produto));
         when(produtoRepository.save(any(Produto.class))).thenReturn(produto);
@@ -70,7 +70,7 @@ public class ProdutoServiceTest {
     @Test
     public void lancaExcecao_AoAlterarProdutoInexistenteNoBanco(){
 
-        Produto produtoAAlterar = new Produto().builder().id(10L).descricao("Caderno Tilibras 12 Matérias").valorUnitario(new BigDecimal("15.0")).build();
+        Produto produtoAAlterar = Produto.builder().id(10L).descricao("Caderno Tilibras 12 Matérias").valorUnitario(new BigDecimal("15.0")).build();
 
         when(produtoRepository.findById(any(Long.class))).thenReturn(Optional.empty());
         when(produtoRepository.save(any(Produto.class))).thenReturn(produto);
@@ -81,7 +81,7 @@ public class ProdutoServiceTest {
     @Test
     public void retornaProduto_AoBuscarProdutoPorId(){
 
-        Produto produtoABuscar = new Produto().builder().id(10L).descricao("Caderno Tilibras 12 Matérias").valorUnitario(new BigDecimal("15.0")).build();
+        Produto produtoABuscar = Produto.builder().id(10L).descricao("Caderno Tilibras 12 Matérias").valorUnitario(new BigDecimal("15.0")).build();
 
         when(produtoRepository.findById(any(Long.class))).thenReturn(Optional.of(produto));
 
@@ -92,7 +92,7 @@ public class ProdutoServiceTest {
     @Test
     public void lancaExcecao_AoBuscarProdutoPorIdInexistenteNoBanco(){
 
-        Produto produtoABuscar = new Produto().builder().id(10L).descricao("Caderno Tilibras 12 Matérias").valorUnitario(new BigDecimal("15.0")).build();
+        Produto produtoABuscar = Produto.builder().id(10L).descricao("Caderno Tilibras 12 Matérias").valorUnitario(new BigDecimal("15.0")).build();
 
         when(produtoRepository.findById(any(Long.class))).thenReturn(Optional.empty());
 

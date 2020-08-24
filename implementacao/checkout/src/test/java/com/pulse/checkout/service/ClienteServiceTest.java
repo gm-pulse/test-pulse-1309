@@ -31,7 +31,7 @@ public class ClienteServiceTest {
 
     @BeforeEach
     public void criaCliente(){
-        cliente = new Cliente().builder().id(1L).nome("Milena Vitória").cpf("58123893060").endereco(new Endereco()).build();
+        cliente = Cliente.builder().id(1L).nome("Milena Vitória").cpf("58123893060").endereco(new Endereco()).build();
     }
 
     @Test
@@ -49,14 +49,14 @@ public class ClienteServiceTest {
         when(clienteRepository.findByCpf(any(String.class))).thenReturn(Optional.of(cliente));
         when(clienteRepository.save(any(Cliente.class))).thenReturn(cliente);
 
-        Cliente novoCliente = new Cliente().builder().nome("Milena Vitória").cpf("58123893060").endereco(new Endereco()).build();
+        Cliente novoCliente = Cliente.builder().nome("Milena Vitória").cpf("58123893060").endereco(new Endereco()).build();
 
         assertThrows(CheckoutCustomException.class, () -> clienteService.salvar(novoCliente));
     }
 
     @Test
     public void retornaClienteAlterado_AoAlterarCliente(){
-        Cliente clienteAAlterar = new Cliente().builder().id(1L).nome("Milena Vitória Borges").cpf("58123893060").endereco(new Endereco()).build();
+        Cliente clienteAAlterar = Cliente.builder().id(1L).nome("Milena Vitória Borges").cpf("58123893060").endereco(new Endereco()).build();
 
         when(clienteRepository.findById(any(Long.class))).thenReturn(Optional.of(cliente));
         when(clienteRepository.save(any(Cliente.class))).thenReturn(cliente);
@@ -69,7 +69,7 @@ public class ClienteServiceTest {
 
     @Test
     public void lancaExcecao_AoAlterarClienteSemId() {
-        Cliente clienteAAlterar = new Cliente().builder().nome("Milena Vitória Borges").cpf("58123893060").endereco(new Endereco()).build();
+        Cliente clienteAAlterar = Cliente.builder().nome("Milena Vitória Borges").cpf("58123893060").endereco(new Endereco()).build();
 
         when(clienteRepository.findById(any(Long.class))).thenReturn(Optional.of(cliente));
         when(clienteRepository.save(any(Cliente.class))).thenReturn(cliente);
@@ -79,7 +79,7 @@ public class ClienteServiceTest {
 
     @Test
     public void lancaExcecao_AoAlterarClienteInexistenteNoBanco() {
-        Cliente clienteAAlterar = new Cliente().builder().id(1L).nome("Milena Vitória Borges").cpf("58123893060").endereco(new Endereco()).build();
+        Cliente clienteAAlterar = Cliente.builder().id(1L).nome("Milena Vitória Borges").cpf("58123893060").endereco(new Endereco()).build();
 
         when(clienteRepository.findById(any(Long.class))).thenReturn(Optional.empty());
         when(clienteRepository.save(any(Cliente.class))).thenReturn(cliente);
@@ -89,7 +89,7 @@ public class ClienteServiceTest {
 
     @Test
     public void lancaExcecao_AoAlterarClienteComCpfJaCadastradoNaBase(){
-        Cliente clienteAAlterar = new Cliente().builder().id(1L).nome("Milena Vitória Borges").cpf("61685677045").endereco(new Endereco()).build();
+        Cliente clienteAAlterar = Cliente.builder().id(1L).nome("Milena Vitória Borges").cpf("61685677045").endereco(new Endereco()).build();
 
         when(clienteRepository.findById(any(Long.class))).thenReturn(Optional.of(cliente));
         when(clienteRepository.findByCpf(any(String.class))).thenReturn(Optional.of(clienteAAlterar));
@@ -100,7 +100,7 @@ public class ClienteServiceTest {
 
     @Test
     public void retornaCliente_AoBuscarPorId(){
-        Cliente clienteABuscar = new Cliente().builder().id(1L).nome("Milena Vitória Borges").cpf("61685677045").endereco(new Endereco()).build();
+        Cliente clienteABuscar = Cliente.builder().id(1L).nome("Milena Vitória Borges").cpf("61685677045").endereco(new Endereco()).build();
 
         when(clienteRepository.findById(any(Long.class))).thenReturn(Optional.of(cliente));
 
@@ -109,7 +109,7 @@ public class ClienteServiceTest {
 
     @Test
     public void lancaExcecao_AoBuscarPorIdInexistenteNoBanco(){
-        Cliente clienteABuscar = new Cliente().builder().id(1L).nome("Milena Vitória Borges").cpf("61685677045").endereco(new Endereco()).build();
+        Cliente clienteABuscar = Cliente.builder().id(1L).nome("Milena Vitória Borges").cpf("61685677045").endereco(new Endereco()).build();
 
         when(clienteRepository.findById(any(Long.class))).thenReturn(Optional.empty());
 
@@ -118,7 +118,7 @@ public class ClienteServiceTest {
     }
     @Test
     public void retornaCliente_AoBuscarPorCpf(){
-        Cliente clienteABuscar = new Cliente().builder().id(1L).nome("Milena Vitória Borges").cpf("61685677045").endereco(new Endereco()).build();
+        Cliente clienteABuscar = Cliente.builder().id(1L).nome("Milena Vitória Borges").cpf("61685677045").endereco(new Endereco()).build();
 
         when(clienteRepository.findByCpf(any(String.class))).thenReturn(Optional.of(cliente));
 
@@ -127,7 +127,7 @@ public class ClienteServiceTest {
 
     @Test
     public void lancaExcecao_AoBuscarPorCpfInexistenteNoBanco(){
-        Cliente clienteABuscar = new Cliente().builder().id(1L).nome("Milena Vitória Borges").cpf("61685677045").endereco(new Endereco()).build();
+        Cliente clienteABuscar = Cliente.builder().id(1L).nome("Milena Vitória Borges").cpf("61685677045").endereco(new Endereco()).build();
 
         when(clienteRepository.findByCpf(any(String.class))).thenReturn(Optional.empty());
 
