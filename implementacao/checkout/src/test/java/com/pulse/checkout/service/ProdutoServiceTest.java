@@ -40,7 +40,7 @@ public class ProdutoServiceTest {
 
         Produto novoProduto = produtoService.salvar(new Produto().builder().descricao("Caderno Tilibra").valorUnitario(new BigDecimal("15.0")).build());
 
-        assertEquals(produto.getDescricao(), novoProduto.getDescricao());
+        assertEquals(produto.getId(), novoProduto.getId());
 
     }
 
