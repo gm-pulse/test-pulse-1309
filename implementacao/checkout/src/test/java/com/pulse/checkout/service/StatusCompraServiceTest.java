@@ -37,7 +37,7 @@ public class StatusCompraServiceTest {
     public void retornaStatusCompraSalvo_AoSalvarStatusCompra(){
         when(statusCompraRepository.save(any(StatusCompra.class))).thenReturn(statusCompra);
 
-        StatusCompra novoStatusCompra =  StatusCompra.builder().id(1L).descricao("Em Andamento").build();
+        StatusCompra novoStatusCompra =  statusCompraService.salvar(StatusCompra.builder().id(1L).descricao("Em Andamento").build());
 
         assertEquals(statusCompra.getId(), novoStatusCompra.getId());
 

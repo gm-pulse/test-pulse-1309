@@ -136,7 +136,6 @@ create table public.ck05_pagamento
 	ck05ck04_cod_transportadora bigint not null
 		constraint ck05ck04_pagamento_transportadora
 			references public.ck04_transportadora,
-	-- Only integer types can be auto increment
 	ck05_valor_total numeric not null
 );
 

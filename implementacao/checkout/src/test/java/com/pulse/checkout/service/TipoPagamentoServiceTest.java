@@ -37,7 +37,7 @@ public class TipoPagamentoServiceTest {
     public void retornaTipoPagamentoSalvo_AoSalvarTipoPagamento(){
         when(tipoPagamentoRepository.save(any(TipoPagamento.class))).thenReturn(tipoPagamento);
 
-        TipoPagamento novoTipoPagamento =  TipoPagamento.builder().id(1L).descricao("A Vista").build();
+        TipoPagamento novoTipoPagamento =  tipoPagamentoService.salvar(TipoPagamento.builder().id(1L).descricao("A Vista").build());
 
         assertEquals(tipoPagamento.getId(), novoTipoPagamento.getId());
 
