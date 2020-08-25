@@ -1,12 +1,14 @@
 package com.pulse.checkout.services;
 
 import com.pulse.checkout.exception.CheckoutCustomException;
+import com.pulse.checkout.model.CarrinhoCompras;
 import com.pulse.checkout.model.ProdutoPedido;
 import com.pulse.checkout.repository.ProdutoPedidoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -65,4 +67,9 @@ public class ProdutoPedidoService {
             throw new CheckoutCustomException("O valor total do produto não corresponde com o valor correto");
         }
     }
+
+    public List<ProdutoPedido> listarProdutosPedidosDeCarrinho(CarrinhoCompras carrinhoCompras){
+        return produtoPedidoRepository.findAllByCarrinhoCompras(carrinhoCompras);
+    }
+
 }
