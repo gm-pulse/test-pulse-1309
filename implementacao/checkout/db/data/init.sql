@@ -275,6 +275,6 @@ INSERT INTO public.ck10_status_compra
 
 INSERT INTO  public.ck09_compra
     (ck09_cod_compra, ck09_cod_rastreio, ck09_numero_pedido, ck09ck10_cod_status, ck09ck05_cod_pagamento) VALUES
-        (1, 'AA123456789BR', '1111-21', 1, 1),
+        (1, 'AA123456789BR', '11111-21', 1, 1),
         (2, 'AA987654321BR', '21453-01', 2, 2),
         (3, 'AA100833276BR', '14788-55', 3, 3);
