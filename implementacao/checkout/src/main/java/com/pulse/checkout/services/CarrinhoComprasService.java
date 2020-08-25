@@ -40,7 +40,12 @@ public class CarrinhoComprasService {
             throw new CheckoutCustomException("Carrinho de Compras com ID não informado");
         }
         return carrinhoComprasRepository.findById(carrinhoCompras.getId())
-                .map(carrinhoComprasAlterado -> carrinhoComprasRepository.save(carrinhoCompras))
+                .map(carrinhoComprasAlterado -> {
+                    if(!carrinhoComprasAlterado.getValorTotal().equals(carrinhoCompras.getValorTotal())){
+                        return carrinhoComprasRepository.save(atualizaCarrinho(carrinhoCompras));
+                    }
+                    return carrinhoComprasRepository.save(carrinhoCompras);
+                })
                 .orElseThrow(
                         () -> new CheckoutCustomException("Carrinho de compras não existe e não pode ser alterado ")
                 );
