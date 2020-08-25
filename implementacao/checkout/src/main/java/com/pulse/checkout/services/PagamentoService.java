@@ -1,11 +1,7 @@
 package com.pulse.checkout.services;
 
 import com.pulse.checkout.exception.CheckoutCustomException;
-import com.pulse.checkout.model.CarrinhoCompras;
-import com.pulse.checkout.model.Pagamento;
-import com.pulse.checkout.model.TipoPagamento;
-import com.pulse.checkout.model.Transportadora;
-import com.pulse.checkout.repository.CarrinhoComprasRepository;
+import com.pulse.checkout.model.*;
 import com.pulse.checkout.repository.PagamentoRepository;
 import com.pulse.checkout.repository.TipoPagamentoRepository;
 import com.pulse.checkout.repository.TransportadoraRepository;
@@ -17,14 +13,17 @@ import org.springframework.stereotype.Service;
 public class PagamentoService {
 
     private final PagamentoRepository pagamentoRepository;
-    private final CarrinhoComprasRepository carrinhoComprasRepository;
-    private final TipoPagamentoRepository tipoPagamentoRepository;
-    private final TransportadoraRepository transportadoraRepository;
+
+    private final CarrinhoComprasService carrinhoComprasService;
+    private final TipoPagamentoService tipoPagamentoService;
+    private final TransportadoraService transportadoraService;
+    private final EnderecoService enderecoService;
 
     public Pagamento salvar(Pagamento pagamento) {
         verificaCarrinhoCompras(pagamento.getCarrinhoCompras());
         verificaTipoPagamento(pagamento.getTipoPagamento());
         verificaTransportadora(pagamento.getTransportadora());
+        verificaEnderecoEntrega(pagamento.getEnderecoEntrega());
         pagamento = calculaValorPagamento(pagamento);
 
         return pagamentoRepository.save(pagamento);
@@ -53,20 +52,46 @@ public class PagamentoService {
     }
 
     private void verificaCarrinhoCompras(CarrinhoCompras carrinhoCompras) {
-        if (carrinhoCompras.getId() == null || !carrinhoComprasRepository.findById(carrinhoCompras.getId()).isPresent()) {
-            throw new CheckoutCustomException("O carrinho de compras é inexistente");
+        if(carrinhoCompras!=null){
+            if (carrinhoComprasService.buscaPorId(carrinhoCompras.getId())==null) {
+                throw new CheckoutCustomException("O carrinho de compras é inexistente");
+            }
+        }else {
+            throw new CheckoutCustomException("O carrinho de compras não foi informado");
         }
+
     }
 
     private void verificaTipoPagamento(TipoPagamento tipoPagamento) {
-        if (tipoPagamento.getId() == null || !tipoPagamentoRepository.findById(tipoPagamento.getId()).isPresent()) {
-            throw new CheckoutCustomException("O tipo de pagamento nao foi informado corretamente");
+        if(tipoPagamento!=null){
+            if (tipoPagamentoService.buscaPorId(tipoPagamento.getId())==null) {
+                throw new CheckoutCustomException("O tipo de pagamento é inexistente");
+            }
+        }else {
+            throw new CheckoutCustomException("O tipo de pagamento não foi informado");
+
         }
+
     }
 
     private void verificaTransportadora(Transportadora transportadora) {
-        if (transportadora.getId() == null || !transportadoraRepository.findById(transportadora.getId()).isPresent()) {
-            throw new CheckoutCustomException("A transportadora não foi informada corretamente");
+        if(transportadora!=null){
+            if (transportadoraService.buscaPorId(transportadora.getId())==null) {
+                throw new CheckoutCustomException("A transportadora é inexistente");
+            }
+        }else{
+            throw new CheckoutCustomException("A transportadora não foi informada");
+        }
+
+    }
+
+    private void verificaEnderecoEntrega(Endereco endereco) {
+        if(endereco!=null){
+            if (enderecoService.buscaPorId(endereco.getId())==null) {
+                throw new CheckoutCustomException("O endereco de entrega é inxistente");
+            }
+        }else{
+            throw new CheckoutCustomException("O endereco de entrega não foi informado");
         }
     }
 

@@ -1,6 +1,7 @@
 package com.pulse.checkout.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -35,6 +37,11 @@ public class Pagamento {
     @ManyToOne
     @JoinColumn(name = "CK05CK04_COD_TRANSPORTADORA")
     private Transportadora transportadora;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "CK05CK03_COD_ENDERECO")
+    private Endereco enderecoEntrega;
 
     @NotNull(message = "O valor total do pagamento não pode ser nulo")
     @Column(name = "CK05_VALOR_TOTAL")
