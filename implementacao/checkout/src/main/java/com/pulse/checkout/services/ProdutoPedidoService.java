@@ -72,6 +72,31 @@ public class ProdutoPedidoService {
         return produtoPedidoRepository.findAllByCarrinhoCompras(carrinhoCompras).get();
     }
 
+    public List<ProdutoPedido> listarProdutosPedidosPorProdutoId(Long produtoId){
+        Optional<List<ProdutoPedido>> produtoPedidos =  produtoPedidoRepository.findAllByProduto_Id(produtoId);
+        if(!produtoPedidos.isPresent()){
+            throw new CheckoutCustomException("Não existem pedidos para o produto de ID " + produtoId);
+        }
+        return produtoPedidos.get();
+    }
+
+    public List<ProdutoPedido> listarProdutosPedidosPorCarrinhoId(Long carrinhoId){
+
+        Optional<List<ProdutoPedido>> produtoPedidos =  produtoPedidoRepository.findAllByCarrinhoCompras_Id(carrinhoId);
+        if(!produtoPedidos.isPresent()){
+            throw new CheckoutCustomException("Não existem produtos pedidos para o carrinho de compras de ID " + carrinhoId);
+        }
+        return produtoPedidos.get();
+    }
+
+    public List<ProdutoPedido> listarProdutosPedidosPorClienteId(Long clienteId){
+        Optional<List<ProdutoPedido>> produtoPedidos =  produtoPedidoRepository.findAllByCarrinhoCompras_Cliente_Id(clienteId);
+        if(!produtoPedidos.isPresent()){
+            throw new CheckoutCustomException("Não existem produtos pedidos para o cliente de ID " + clienteId);
+        }
+        return produtoPedidos.get();
+    }
+
     public ProdutoPedido buscaPorId(Long id) {
         return produtoPedidoRepository.findById(id)
                 .orElseThrow(() -> new CheckoutCustomException("Produto Pedido com ID " + id + " inexiste no banco"));

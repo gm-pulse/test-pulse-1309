@@ -260,9 +260,9 @@ INSERT INTO
 -- CarrinhoCompras (CK07_CARRINHO_COMPRAS)
 INSERT INTO public.ck07_carrinho_compras
     (ck07_cod_carrinho_compras, ck07_total_itens, ck07_valor_total, ck07ck02_cod_cliente) VALUES
-        (1, 3, 31.57, 1),
-        (2, 1, 20.40, 2),
-        (3, 1, 11.96, 3);
+        (1, 7, 31.57, 1),
+        (2, 8, 20.40, 2),
+        (4, 1, 11.96, 3);
 
     SELECT pg_catalog.setval('public.ck07_carrinho_compras_ck07_cod_carrinho_compras_seq', 4, true);
 
