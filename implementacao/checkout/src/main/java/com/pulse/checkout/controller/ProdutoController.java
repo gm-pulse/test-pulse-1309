@@ -21,6 +21,7 @@ import static org.springframework.http.ResponseEntity.ok;
 @AllArgsConstructor
 @RequestMapping(value = "/api")
 @Api(value = "Api Rest Produtos")
+@CrossOrigin(origins = "*")
 public class ProdutoController {
 
     private final ProdutoRepository produtoRepository;

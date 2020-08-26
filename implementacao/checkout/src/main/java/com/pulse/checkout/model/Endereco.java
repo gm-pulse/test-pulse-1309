@@ -27,7 +27,7 @@ public class Endereco {
     @Column(name = "CK03_RUA")
     private String rua;
 
-    @NotBlank(message = "O numero não deve ser nulo")
+    @NotNull(message = "O numero não deve ser nulo")
     @Column(name = "CK03_NUMERO")
     private Integer numero;
 
