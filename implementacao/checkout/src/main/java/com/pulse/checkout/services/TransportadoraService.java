@@ -2,6 +2,7 @@ package com.pulse.checkout.services;
 
 import com.pulse.checkout.exception.CheckoutCustomException;
 import com.pulse.checkout.model.Transportadora;
+import com.pulse.checkout.repository.PagamentoRepository;
 import com.pulse.checkout.repository.TransportadoraRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 public class TransportadoraService {
 
     private final TransportadoraRepository transportadoraRepository;
+
+    private final PagamentoRepository pagamentoRepository;
 
     public Transportadora salvar(Transportadora transportadora) {
         verificaCnpjJaCadastrado(transportadora.getCnpj());
@@ -48,4 +51,19 @@ public class TransportadoraService {
             throw new CheckoutCustomException("Transportadora com o mesmo CNPJ já se encontra cadastrada");
         }
     }
+
+    public void deletaTransportadoraPorId(Long id) {
+        Transportadora transportadora = buscaPorId(id);
+
+        verificaTransportadora(transportadora);
+
+        transportadoraRepository.delete(transportadora);
+    }
+
+    private void verificaTransportadora(Transportadora transportadora){
+        if(pagamentoRepository.findAllByTransportadora(transportadora).isPresent()){
+            throw new CheckoutCustomException("A transportadora está inclusa em um pagamento e não pode ser excluída");
+        }
+    }
+
 }

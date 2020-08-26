@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Data
@@ -34,7 +35,7 @@ public class Transportadora {
     @Column(name = "CK04_CNPJ")
     private String cnpj;
 
-    @NotBlank(message = "O valor do frete da transportadora não pode ser nulo")
+    @NotNull(message = "O valor do frete da transportadora não pode ser nulo")
     @Column(name = "CK04_VALOR_FRETE")
     private BigDecimal valorFrete;
 
