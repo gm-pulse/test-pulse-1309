@@ -119,6 +119,35 @@ create sequence IF NOT EXISTS public.ck07_carrinho_compras_ck07_cod_carrinho_com
     alter sequence public.ck07_carrinho_compras_ck07_cod_carrinho_compras_seq owner to postgres;
 
 
+
+create table public.ck10_status_compra
+(
+	ck10_cod_status_compra bigserial not null
+		constraint ck10_status_compra_pk
+			primary key,
+	ck10_descricao varchar(25) not null
+);
+
+alter table public.ck10_status_compra owner to postgres;
+
+create table public.ck09_compra
+(
+	ck09_cod_compra bigserial not null
+		constraint ck09_compra_pk
+			primary key,
+	ck09_cod_rastreio varchar(13) not null,
+	ck09_numero_pedido varchar(8) not null,
+	ck09ck10_cod_status bigint not null
+	    constraint fkck09ck10_cod_status_compra
+			references public.ck10_status_compra
+);
+
+alter table public.ck09_compra owner to postgres;
+
+create unique index ck09_compra_ck09_cod_compra_uindex
+	on public.ck09_compra (ck09_cod_compra);
+
+
 create table public.ck05_pagamento
 (
 	ck05_cod_pagamento bigserial not null
@@ -136,6 +165,9 @@ create table public.ck05_pagamento
 	ck05ck04_cod_transportadora bigint not null
 		constraint ck05ck04_pagamento_transportadora
 			references public.ck04_transportadora,
+	ck05ck09_cod_compra bigint not null
+		constraint ck05ck09_pagamento_compra
+			references public.ck09_compra,
 	ck05_valor_total numeric not null
 );
 
@@ -170,39 +202,6 @@ create unique index ck08_produtos_pedidos_ck08_cod_produtos_pedidos_uindex
 	on public.ck08_produto_pedido (ck08_cod_produto_pedido);
 
 
-create table public.ck10_status_compra
-(
-	ck10_cod_status_compra bigserial not null
-		constraint ck10_status_compra_pk
-			primary key,
-	ck10_descricao varchar(25) not null
-);
-
-alter table public.ck10_status_compra owner to postgres;
-
-create unique index ck10_status_compra_ck10_cod_status_compra_uindex
-	on public.ck10_status_compra (ck10_cod_status_compra);
-
-
-create table public.ck09_compra
-(
-	ck09_cod_compra bigserial not null
-		constraint ck09_compra_pk
-			primary key,
-	ck09_cod_rastreio varchar(13) not null,
-	ck09_numero_pedido varchar(8) not null,
-	ck09ck10_cod_status bigint not null
-	    constraint fkck09ck10_cod_status_compra
-			references public.ck10_status_compra,
-	ck09ck05_cod_pagamento bigint not null
-	    constraint fkck09ck05_compra_pagamento
-	        references public.ck05_pagamento
-);
-
-alter table public.ck09_compra owner to postgres;
-
-create unique index ck09_compra_ck09_cod_compra_uindex
-	on public.ck09_compra (ck09_cod_compra);
 
 
 -- Inserindo os dados:
@@ -262,17 +261,33 @@ INSERT INTO public.ck07_carrinho_compras
     (ck07_cod_carrinho_compras, ck07_total_itens, ck07_valor_total, ck07ck02_cod_cliente) VALUES
         (1, 7, 31.57, 1),
         (2, 8, 20.40, 2),
-        (4, 1, 11.96, 3);
+        (3, 1, 11.96, 3);
 
     SELECT pg_catalog.setval('public.ck07_carrinho_compras_ck07_cod_carrinho_compras_seq', 4, true);
 
+INSERT INTO public.ck10_status_compra
+    (ck10_cod_status_compra, ck10_descricao) VALUES
+        (1, 'ABERTO'),
+        (2, 'EM PROCESSAMENTO'),
+        (3, 'CONCLUÍDO');
+
+    SELECT pg_catalog.setval('public.ck10_status_compra_ck10_cod_status_compra_seq', 4, true);
+
+
+INSERT INTO  public.ck09_compra
+    (ck09_cod_compra, ck09_cod_rastreio, ck09_numero_pedido, ck09ck10_cod_status) VALUES
+        (1, 'AA123456789BR', '11111-21', 1),
+        (2, 'AA987654321BR', '21453-01', 2),
+        (3, 'AA100833276BR', '14788-55', 3);
+
+    SELECT pg_catalog.setval('public.ck09_compra_ck09_cod_compra_seq', 4, true);
 
 -- Pagamento (CK05_PAGAMENTO)
 INSERT INTO public.ck05_pagamento
-    (ck05_cod_pagamento, ck05ck06_cod_tipo_pag, ck05ck07_cod_carrinho, ck05ck03_cod_endereco, ck05ck04_cod_transportadora, ck05_valor_total) VALUES
-        (1, 1, 1, 1, 2, 50.22),
-        (2, 2, 2, 2, 2, 39.05),
-        (3, 2, 3, 3, 1, 27.51);
+    (ck05_cod_pagamento, ck05ck06_cod_tipo_pag, ck05ck07_cod_carrinho, ck05ck03_cod_endereco, ck05ck04_cod_transportadora, ck05_valor_total, ck05ck09_cod_compra) VALUES
+        (1, 1, 1, 1, 2, 50.22, 1),
+        (2, 2, 2, 2, 2, 39.05, 2),
+        (3, 2, 3, 3, 1, 27.51, 3);
 
     SELECT pg_catalog.setval('public.ck05_pagamento_ck05_cod_pagamento_seq', 4, true);
 
@@ -287,19 +302,5 @@ INSERT INTO public.ck08_produto_pedido
     SELECT pg_catalog.setval('public.ck08_produto_pedido_ck08_cod_produto_pedido_seq', 6, true);
 
 
-INSERT INTO public.ck10_status_compra
-    (ck10_cod_status_compra, ck10_descricao) VALUES
-        (1, 'ABERTO'),
-        (2, 'EM PROCESSAMENTO'),
-        (3, 'CONCLUÍDO');
-
-    SELECT pg_catalog.setval('public.ck10_status_compra_ck10_cod_status_compra_seq', 4, true);
 
 
-INSERT INTO  public.ck09_compra
-    (ck09_cod_compra, ck09_cod_rastreio, ck09_numero_pedido, ck09ck10_cod_status, ck09ck05_cod_pagamento) VALUES
-        (1, 'AA123456789BR', '11111-21', 1, 1),
-        (2, 'AA987654321BR', '21453-01', 2, 2),
-        (3, 'AA100833276BR', '14788-55', 3, 3);
-
-    SELECT pg_catalog.setval('public.ck09_compra_ck09_cod_compra_seq', 4, true);

@@ -1,5 +1,6 @@
 package com.pulse.checkout.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -46,4 +47,9 @@ public class Pagamento {
     @NotNull(message = "O valor total do pagamento não pode ser nulo")
     @Column(name = "CK05_VALOR_TOTAL")
     private BigDecimal valorTotal;
+
+    @OneToOne
+    @JoinColumn(name="CK05CK09_COD_COMPRA")
+    private Compra compra;
+
 }

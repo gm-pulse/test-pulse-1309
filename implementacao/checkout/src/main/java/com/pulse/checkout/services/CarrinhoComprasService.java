@@ -58,7 +58,7 @@ public class CarrinhoComprasService {
 
     public CarrinhoCompras buscaPorId(Long id) {
         return carrinhoComprasRepository.findById(id)
-                .orElseThrow(() -> new CheckoutCustomException("Carrinho de compras com " + id + " inexistente no banco"));
+                .orElseThrow(() -> new CheckoutCustomException("Carrinho de compras com ID " + id + " inexistente no banco"));
     }
 
     public CarrinhoCompras adicionaProdutosCarrinho(Long produtoId, Integer qtdItens, Long carrinhoComprasId) {

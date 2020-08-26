@@ -18,28 +18,15 @@ public class CompraService {
 
     private final StatusCompraService statusCompraService;
 
-    private final PagamentoService pagamentoService;
 
     public Compra salvar(Compra compra){
-        verificaPagamento(compra.getPagamento());
         return criaCompra(compra);
 
     }
 
-    private void verificaPagamento(Pagamento pagamento){
-        if(pagamento!=null){
-            if (pagamentoService.buscaPorId(pagamento.getId())==null) {
-                throw new CheckoutCustomException("O tipo de pagamento é inexistente");
-            }
-        }else {
-            throw new CheckoutCustomException("O tipo de pagamento não foi informado");
-
-        }
-    }
-
     private Compra criaCompra(Compra compra){
         if (compra.getId() != null) {
-            throw new CheckoutCustomException("Carrinho já existe e não pode ser criado");
+            throw new CheckoutCustomException("Compra já existe e não pode ser criado");
 
         }
         compra.setStatusCompra(statusCompraService.buscaPorId(3L));
@@ -69,8 +56,7 @@ public class CompraService {
 
         Integer valorAleatorio = geraValorAleatorio(random, 100000000, 999999999);
 
-        return "AA".concat(String.valueOf(valorAleatorio))
-                .concat(String.valueOf(random.nextInt(9)*10)).concat("BR");
+        return "AA".concat(String.valueOf(valorAleatorio)).concat("BR");
     }
 
     public Compra buscaPorId(Long id){
@@ -92,13 +78,8 @@ public class CompraService {
             throw new CheckoutCustomException("Compra com ID não informado");
         }
         return compraRepository.findById(compra.getId())
-                .map(compraAlterada ->{
-                    if(!compraAlterada.getPagamento().equals(compra.getPagamento())) {
-                        verificaPagamento(compraAlterada.getPagamento());
-                    }
-                    return compraRepository.save(compra);
-
-                })
+                .map(compraAlterada ->compraRepository.save(compra)
+                )
                 .orElseThrow(
                         () -> new CheckoutCustomException("Compra não existe e não pode ser alterada")
                 );

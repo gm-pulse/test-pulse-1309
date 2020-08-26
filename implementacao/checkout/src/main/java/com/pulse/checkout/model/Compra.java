@@ -36,8 +36,4 @@ public class Compra {
     @JoinColumn(name = "CK09CK10_COD_STATUS")
     private StatusCompra statusCompra;
 
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "CK09CK05_COD_PAGAMENTO")
-    private Pagamento pagamento;
 }

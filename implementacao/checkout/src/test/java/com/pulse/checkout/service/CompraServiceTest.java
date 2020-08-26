@@ -49,7 +49,7 @@ public class CompraServiceTest {
 
     @BeforeEach
     public void criaCompra(){
-        compra = Compra.builder().id(1L).statusCompra(statusCompra).pagamento(pagamento).numPedido("11111-21").codRastreio("AA123456789BR").build();
+        compra = Compra.builder().id(1L).statusCompra(statusCompra).numPedido("11111-21").codRastreio("AA123456789BR").build();
     }
 
     @Test
@@ -58,24 +58,14 @@ public class CompraServiceTest {
         when(pagamentoService.buscaPorId(any(Long.class))).thenReturn(pagamento);
         when(statusCompraService.buscaPorId(any(Long.class))).thenReturn(statusCompra);
 
-        Compra novaCompra = compraService.salvar(Compra.builder().pagamento(pagamento).build());
+        Compra novaCompra = compraService.salvar(Compra.builder().build());
 
         assertEquals(compra.getId(), novaCompra.getId());
     }
 
     @Test
-    public void lancaExcecao_AoSalvarCompraComPagamentoNulo(){
-        when(compraRepository.save(any(Compra.class))).thenReturn(compra);
-        when(pagamentoService.buscaPorId(any(Long.class))).thenReturn(pagamento);
-        when(statusCompraService.buscaPorId(any(Long.class))).thenReturn(statusCompra);
-
-
-        assertThrows(CheckoutCustomException.class ,() ->compraService.salvar(Compra.builder().build()));
-    }
-
-    @Test
     public void retornaCompraAlterada_AoAlterarCompra(){
-        Compra compraAAlterar =Compra.builder().id(1L).statusCompra(statusCompra).pagamento(pagamento).numPedido("11111-21").codRastreio("AA123456789BR").build();
+        Compra compraAAlterar =Compra.builder().id(1L).statusCompra(statusCompra).numPedido("11111-21").codRastreio("AA123456789BR").build();
 
         when(compraRepository.findById(any(Long.class))).thenReturn(Optional.of(compra));
         when(compraRepository.save(any(Compra.class))).thenReturn(compra);
@@ -88,7 +78,7 @@ public class CompraServiceTest {
 
     @Test
     public void lancaExcecao_AoAlterarCompraSemId(){
-        Compra compraAAlterar = Compra.builder().statusCompra(statusCompra).pagamento(pagamento).numPedido("11111-21").codRastreio("AA123456789BR").build();
+        Compra compraAAlterar = Compra.builder().statusCompra(statusCompra).numPedido("11111-21").codRastreio("AA123456789BR").build();
 
         when(compraRepository.findById(any(Long.class))).thenReturn(Optional.of(compra));
         when(compraRepository.save(any(Compra.class))).thenReturn(compra);
@@ -99,7 +89,7 @@ public class CompraServiceTest {
     @Test
     public void lancaExcecao_AoAlterarCompraInexistenteNoBanco(){
 
-        Compra compraAAlterar = Compra.builder().id(1L).statusCompra(statusCompra).pagamento(pagamento).numPedido("11111-21").codRastreio("AA123456789BR").build();
+        Compra compraAAlterar = Compra.builder().id(1L).statusCompra(statusCompra).numPedido("11111-21").codRastreio("AA123456789BR").build();
 
         when(compraRepository.findById(any(Long.class))).thenReturn(Optional.empty());
         when(compraRepository.save(any(Compra.class))).thenReturn(compra);
@@ -110,7 +100,7 @@ public class CompraServiceTest {
     @Test
     public void retornaCompra_AoBuscarCompraPorId(){
 
-        Compra compraABuscar = Compra.builder().id(1L).statusCompra(statusCompra).pagamento(pagamento).numPedido("11111-21").codRastreio("AA123456789BR").build();
+        Compra compraABuscar = Compra.builder().id(1L).statusCompra(statusCompra).numPedido("11111-21").codRastreio("AA123456789BR").build();
 
         when(compraRepository.findById(any(Long.class))).thenReturn(Optional.of(compra));
         when(pagamentoService.buscaPorId(any(Long.class))).thenReturn(pagamento);
@@ -122,7 +112,7 @@ public class CompraServiceTest {
     @Test
     public void lancaExcecao_AoBuscarCompraPorIdInexistenteNoBanco(){
 
-        Compra compraABuscar = Compra.builder().id(1L).statusCompra(statusCompra).pagamento(pagamento).numPedido("11111-21").codRastreio("AA123456789BR").build();
+        Compra compraABuscar = Compra.builder().id(1L).statusCompra(statusCompra).numPedido("11111-21").codRastreio("AA123456789BR").build();
 
         when(compraRepository.findById(any(Long.class))).thenReturn(Optional.empty());
 
@@ -132,7 +122,7 @@ public class CompraServiceTest {
     @Test
     public void retornaCompra_AoBuscarCompraPorNumeroPedido(){
 
-        Compra compraABuscar = Compra.builder().id(1L).statusCompra(statusCompra).pagamento(pagamento).numPedido("11111-21").codRastreio("AA123456789BR").build();
+        Compra compraABuscar = Compra.builder().id(1L).statusCompra(statusCompra).numPedido("11111-21").codRastreio("AA123456789BR").build();
 
         when(compraRepository.findByNumPedido(any(String.class))).thenReturn(Optional.of(compra));
         when(pagamentoService.buscaPorId(any(Long.class))).thenReturn(pagamento);
@@ -144,7 +134,7 @@ public class CompraServiceTest {
     @Test
     public void lancaExcecao_AoBuscarCompraPorNumeroPedidoInexistenteNoBanco(){
 
-        Compra compraABuscar = Compra.builder().id(1L).statusCompra(statusCompra).pagamento(pagamento).numPedido("11111-21").codRastreio("AA123456789BR").build();
+        Compra compraABuscar = Compra.builder().id(1L).statusCompra(statusCompra).numPedido("11111-21").codRastreio("AA123456789BR").build();
 
         when(compraRepository.findByNumPedido(any(String.class))).thenReturn(Optional.empty());
 
@@ -154,7 +144,7 @@ public class CompraServiceTest {
     @Test
     public void retornaCompra_AoBuscarCompraPorCodigoRastreio(){
 
-        Compra compraABuscar = Compra.builder().id(1L).statusCompra(statusCompra).pagamento(pagamento).numPedido("11111-21").codRastreio("AA123456789BR").build();
+        Compra compraABuscar = Compra.builder().id(1L).statusCompra(statusCompra).numPedido("11111-21").codRastreio("AA123456789BR").build();
 
         when(compraRepository.findByCodRastreio(any(String.class))).thenReturn(Optional.of(compra));
         when(pagamentoService.buscaPorId(any(Long.class))).thenReturn(pagamento);
@@ -166,7 +156,7 @@ public class CompraServiceTest {
     @Test
     public void lancaExcecao_AoBuscarCompraPorcodigoRastreioInexistenteNoBanco(){
 
-        Compra compraABuscar = Compra.builder().id(1L).statusCompra(statusCompra).pagamento(pagamento).numPedido("11111-21").codRastreio("AA123456789BR").build();
+        Compra compraABuscar = Compra.builder().id(1L).statusCompra(statusCompra).numPedido("11111-21").codRastreio("AA123456789BR").build();
 
         when(compraRepository.findByCodRastreio(any(String.class))).thenReturn(Optional.empty());
 

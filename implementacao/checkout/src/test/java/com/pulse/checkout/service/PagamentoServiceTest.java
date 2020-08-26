@@ -69,6 +69,8 @@ public class PagamentoServiceTest {
         when(transportadoraService.buscaPorId(any(Long.class))).thenReturn(transportadora);
         when(enderecoService.buscaPorId(any(Long.class))).thenReturn(endereco);
         when(carrinhoCompras.getValorTotal()).thenReturn(new BigDecimal("150.0"));
+        when(carrinhoCompras.getValorTotal()).thenReturn(new BigDecimal("130.0"));
+        when(transportadora.getValorFrete()).thenReturn(new BigDecimal("20.0"));
 
         Pagamento novoPagamento = pagamentoService.salvar(Pagamento.builder().id(1L).carrinhoCompras(carrinhoCompras).tipoPagamento(tipoPagamento).transportadora(transportadora).enderecoEntrega(endereco).build());
 
@@ -137,20 +139,6 @@ public class PagamentoServiceTest {
     }
 
     @Test
-    public void lancaExcecao_AoSalvarPagamentoComValorNaoCorrespondente(){
-        when(pagamentoRepository.save(any(Pagamento.class))).thenReturn(pagamento);
-        when(carrinhoComprasService.buscaPorId(any(Long.class))).thenReturn(carrinhoCompras);
-        when(tipoPagamentoService.buscaPorId(any(Long.class))).thenReturn(tipoPagamento);
-        when(transportadoraService.buscaPorId(any(Long.class))).thenReturn(transportadora);
-        when(enderecoService.buscaPorId(any(Long.class))).thenReturn(endereco);
-        when(carrinhoCompras.getValorTotal()).thenReturn(new BigDecimal("200.0"));
-
-        Pagamento novoPagamento = pagamentoService.salvar(Pagamento.builder().id(1L).carrinhoCompras(carrinhoCompras).tipoPagamento(tipoPagamento).transportadora(transportadora).enderecoEntrega(endereco).build());
-
-        assertThrows(CheckoutCustomException.class, () ->pagamentoService.salvar(novoPagamento));
-    }
-
-    @Test
     public void retornaPagamentoAlterado_AoAlterarPagamento(){
         Pagamento pagamentoAAlterar =Pagamento.builder().id(1L).carrinhoCompras(carrinhoCompras).valorTotal(new BigDecimal("150.0")).tipoPagamento(tipoPagamento).transportadora(transportadora).enderecoEntrega(endereco).build();
 
@@ -165,10 +153,12 @@ public class PagamentoServiceTest {
 
     @Test
     public void lancaExcecao_AoAlterarPagamentoSemId(){
-        Pagamento pagamentoAAlterar = Pagamento.builder().id(1L).carrinhoCompras(carrinhoCompras).valorTotal(new BigDecimal("200.0")).tipoPagamento(tipoPagamento).transportadora(transportadora).enderecoEntrega(endereco).build();
+        Pagamento pagamentoAAlterar = Pagamento.builder().carrinhoCompras(carrinhoCompras).valorTotal(new BigDecimal("200.0")).tipoPagamento(tipoPagamento).transportadora(transportadora).enderecoEntrega(endereco).build();
 
         when(pagamentoRepository.findById(any(Long.class))).thenReturn(Optional.of(pagamento));
         when(pagamentoRepository.save(any(Pagamento.class))).thenReturn(pagamento);
+        when(carrinhoCompras.getValorTotal()).thenReturn(new BigDecimal("130.0"));
+        when(transportadora.getValorFrete()).thenReturn(new BigDecimal("20.0"));
 
         assertThrows(CheckoutCustomException.class, () -> pagamentoService.alterar(pagamentoAAlterar));
     }
