@@ -1,8 +1,8 @@
 package com.pulse.checkout.services;
 
 import com.pulse.checkout.exception.CheckoutCustomException;
-import com.pulse.checkout.model.Cliente;
 import com.pulse.checkout.model.TipoPagamento;
+import com.pulse.checkout.repository.PagamentoRepository;
 import com.pulse.checkout.repository.TipoPagamentoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 public class TipoPagamentoService {
 
     private final TipoPagamentoRepository tipoPagamentoRepository;
+
+    private final PagamentoRepository pagamentoRepository;
 
     public TipoPagamento salvar(TipoPagamento tipoPagamento){
         validaJaExisteTipoPagamento(tipoPagamento.getDescricao());
@@ -47,4 +49,17 @@ public class TipoPagamentoService {
                 .orElseThrow(() -> new CheckoutCustomException("Tipo de Pagamento com " + id + " inexistente no banco"));
     }
 
+    public void deletaTipoPagamentoPorId(Long id) {
+        TipoPagamento tipoPagamento = buscaPorId(id);
+        verificaEmPagamento(tipoPagamento);
+
+        tipoPagamentoRepository.delete(tipoPagamento);
+
+    }
+
+    private void verificaEmPagamento(TipoPagamento tipoPagamento){
+        if(pagamentoRepository.findAllByTipoPagamento(tipoPagamento).isPresent()){
+            throw new CheckoutCustomException("O tipo de Pagamento está incluso em um pagamento e não pode ser excluído");
+        }
+    }
 }

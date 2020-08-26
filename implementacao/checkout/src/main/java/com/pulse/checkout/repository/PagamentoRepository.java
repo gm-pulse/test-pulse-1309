@@ -2,6 +2,7 @@ package com.pulse.checkout.repository;
 
 import com.pulse.checkout.model.Endereco;
 import com.pulse.checkout.model.Pagamento;
+import com.pulse.checkout.model.TipoPagamento;
 import com.pulse.checkout.model.Transportadora;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -13,4 +14,6 @@ public interface PagamentoRepository extends JpaRepository<Pagamento, Long> {
     Optional<List<Pagamento>> findAllByEnderecoEntrega(Endereco endereco);
 
     Optional<List<Pagamento>> findAllByTransportadora(Transportadora transportadora);
+
+    Optional<List<Pagamento>> findAllByTipoPagamento(TipoPagamento tipoPagamento);
 }
