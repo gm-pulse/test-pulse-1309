@@ -38,12 +38,12 @@ public class TransportadoraService {
 
     public Transportadora buscaPorId(Long id) {
         return transportadoraRepository.findById(id)
-                .orElseThrow(() -> new CheckoutCustomException("Transportadora com " + id + " inexistente no banco"));
+                .orElseThrow(() -> new CheckoutCustomException("Transportadora com ID" + id + " inexistente no banco"));
     }
 
     public Transportadora buscaPorCnpj(String cnpj) {
         return transportadoraRepository.findByCnpj(cnpj)
-                .orElseThrow(() -> new CheckoutCustomException("Transportadora com " + cnpj + " inexistente no banco"));
+                .orElseThrow(() -> new CheckoutCustomException("Transportadora com CNPJ " + cnpj + " inexistente no banco"));
     }
 
     private void verificaCnpjJaCadastrado(String cnpj) {

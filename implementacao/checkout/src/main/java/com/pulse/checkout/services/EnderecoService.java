@@ -36,7 +36,7 @@ public class EnderecoService {
 
     public Endereco buscaPorId(Long id) {
         return enderecoRepository.findById(id)
-                .orElseThrow(() -> new CheckoutCustomException("Endereco com " + id + " inexiste no banco"));
+                .orElseThrow(() -> new CheckoutCustomException("Endereco com ID " + id + " inexiste no banco"));
     }
 
     public void deletaEnderecoPorId(Long id){

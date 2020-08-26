@@ -46,7 +46,7 @@ public class TipoPagamentoService {
 
     public TipoPagamento buscaPorId(Long id) {
         return tipoPagamentoRepository.findById(id)
-                .orElseThrow(() -> new CheckoutCustomException("Tipo de Pagamento com " + id + " inexistente no banco"));
+                .orElseThrow(() -> new CheckoutCustomException("Tipo de Pagamento com ID" + id + " inexistente no banco"));
     }
 
     public void deletaTipoPagamentoPorId(Long id) {

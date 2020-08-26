@@ -34,7 +34,7 @@ public class ProdutoService {
 
     public Produto buscaPorId(Long id) {
         return produtoRepository.findById(id)
-                .orElseThrow(() -> new CheckoutCustomException("Produto com " + id + " inexiste no banco"));
+                .orElseThrow(() -> new CheckoutCustomException("Produto com ID " + id + " inexiste no banco"));
     }
 
     public void deletaProdutoPorId(Long id) {
