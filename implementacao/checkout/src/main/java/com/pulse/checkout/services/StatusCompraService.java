@@ -2,6 +2,7 @@ package com.pulse.checkout.services;
 
 import com.pulse.checkout.exception.CheckoutCustomException;
 import com.pulse.checkout.model.StatusCompra;
+import com.pulse.checkout.repository.CompraRepository;
 import com.pulse.checkout.repository.StatusCompraRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 public class StatusCompraService {
 
     private final StatusCompraRepository statusCompraRepository;
+
+    private final CompraRepository compraRepository;
 
     public StatusCompra salvar(StatusCompra statusCompra){
         validaJaExisteStatusCompra(statusCompra.getDescricao());
@@ -42,7 +45,19 @@ public class StatusCompraService {
 
     public StatusCompra buscaPorId(Long id){
         return statusCompraRepository.findById(id)
-                .orElseThrow(() -> new CheckoutCustomException("Status de Compra com " + id + " inexistente no banco"));
+                .orElseThrow(() -> new CheckoutCustomException("Status de Compra com ID " + id + " inexistente no banco"));
     }
 
+    public void deletaStatusCompraPorId(Long id) {
+        StatusCompra statusCompra = buscaPorId(id);
+
+        verificaStatusCompraEmCompra(statusCompra);
+        statusCompraRepository.delete(statusCompra);
+    }
+
+    private void verificaStatusCompraEmCompra(StatusCompra statusCompra){
+        if(compraRepository.findAllByStatusCompra(statusCompra).isPresent()){
+            throw new CheckoutCustomException("O status compra está associado a uma compra e não pode ser excluído");
+        }
+    }
 }
