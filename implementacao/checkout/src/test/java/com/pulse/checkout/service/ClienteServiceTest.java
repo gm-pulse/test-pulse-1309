@@ -4,6 +4,7 @@ import com.pulse.checkout.exception.CheckoutCustomException;
 import com.pulse.checkout.model.Cliente;
 import com.pulse.checkout.model.Endereco;
 import com.pulse.checkout.repository.ClienteRepository;
+import com.pulse.checkout.repository.EnderecoRepository;
 import com.pulse.checkout.services.ClienteService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,6 +25,12 @@ public class ClienteServiceTest {
     @Mock
     ClienteRepository clienteRepository;
 
+    @Mock
+    EnderecoRepository enderecoRepository;
+
+    @Mock
+    Endereco endereco;
+
     @InjectMocks
     ClienteService clienteService;
 
@@ -31,14 +38,16 @@ public class ClienteServiceTest {
 
     @BeforeEach
     public void criaCliente(){
-        cliente = Cliente.builder().id(1L).nome("Milena Vitória").cpf("58123893060").endereco(new Endereco()).build();
+        cliente = Cliente.builder().id(1L).nome("Milena Vitória").cpf("58123893060").endereco(endereco).build();
     }
 
     @Test
     public void retornaClienteSalvo_AoSalvarCliente(){
         when(clienteRepository.save(any(Cliente.class))).thenReturn(cliente);
+        when(enderecoRepository.findById(any(Long.class))).thenReturn(Optional.of(endereco));
+        when(endereco.getId()).thenReturn(1L);
 
-        Cliente novoCliente = clienteService.salvar(new Cliente());
+        Cliente novoCliente = clienteService.salvar(Cliente.builder().id(1L).nome("Milena Vitória").cpf("58123893060").endereco(endereco).build());
 
         assertEquals(cliente.getId(), novoCliente.getId());
 

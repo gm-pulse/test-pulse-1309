@@ -47,7 +47,7 @@ create table public.ck02_cliente
 		constraint ck02_cliente_pk
 			primary key,
 	ck02_nome_cliente varchar(255) not null,
-	ck02_cpf_cliente varchar(11) not null,
+	ck02_cpf_cliente varchar(14) not null,
 	ck02ck03_cod_endereco bigint not null
 		constraint fkck02_cliente_endereco
 			references public.ck03_endereco
@@ -218,6 +218,8 @@ INSERT INTO
         (6, 'Papel Toalha Scala 2x1', 2.99),
         (7, 'Refrigerante Guaraná Antartica 2L ', 4.99);
 
+        SELECT pg_catalog.setval('public.ck01_produto_ck01_cod_produto_seq', 8, true);
+
 
 --Endereco (CK03_ENDERECO):
 INSERT INTO
@@ -226,6 +228,9 @@ INSERT INTO
         (2,'Rua São Miguel', 13, 'Quadra 20', 'Pavão Filho', '65081-072'),
         (3,'Rua 12', 28, null, 'Cidade Operária', '65051-652');
 
+    SELECT pg_catalog.setval('public.ck03_endereco_ck03_cod_endereco_seq', 4, true);
+
+
 --Cliente (CK02_CLIENTE):
 INSERT INTO
     public.ck02_cliente (ck02_cod_cliente, ck02_nome_cliente, ck02_cpf_cliente, ck02ck03_cod_endereco) VALUES
@@ -233,11 +238,15 @@ INSERT INTO
         (2, 'Lúcia Lavínia Vanessa da Mota', '86458325770', 2),
         (3, 'Martin Felipe Lorenzo Sales', '84119346404', 3);
 
+        SELECT pg_catalog.setval('public.ck02_cliente_ck02_cod_cliente_seq', 4, true);
+
 -- Transportadora (CK04_TRANSPORTADORA)
 INSERT INTO
     public.ck04_transportadora (ck04_cod_transportadora, ck04_nome, ck04_cnpj, ck04_valor_frete) VALUES
         (1, 'JDLOG', '52035712000140', 15.55),
         (2, 'DIRECT', '39251402000102', 18.65);
+
+        SELECT pg_catalog.setval('public.ck04_transportadora_ck04_cod_transportadora_seq', 3, true);
 
 -- TipoPagamento (CK06_TIPO_PAGAMENTO)
 INSERT INTO
@@ -245,12 +254,17 @@ INSERT INTO
         (1, 'À Vista'),
         (2, 'Cartão');
 
--- CarrinhoCompras (CK01_CARRINHO_COMPRAS)
+    SELECT pg_catalog.setval('public.ck06_tipo_pagamento_ck06_cod_tipo_pag_seq', 3, true);
+
+-- CarrinhoCompras (CK07_CARRINHO_COMPRAS)
 INSERT INTO public.ck07_carrinho_compras
     (ck07_cod_carrinho_compras, ck07_total_itens, ck07_valor_total, ck07ck02_cod_cliente) VALUES
         (1, 3, 31.57, 1),
         (2, 1, 20.40, 2),
         (3, 1, 11.96, 3);
+
+    SELECT pg_catalog.setval('public.ck07_carrinho_compras_ck07_cod_carrinho_compras_seq', 4, true);
+
 
 -- Pagamento (CK05_PAGAMENTO)
 INSERT INTO public.ck05_pagamento
@@ -258,6 +272,8 @@ INSERT INTO public.ck05_pagamento
         (1, 1, 1, 1, 2, 50.22),
         (2, 2, 2, 2, 2, 39.05),
         (3, 2, 3, 3, 1, 27.51);
+
+    SELECT pg_catalog.setval('public.ck05_pagamento_ck05_cod_pagamento_seq', 4, true);
 
 INSERT INTO public.ck08_produto_pedido
     (ck08_cod_produto_pedido, ck08ck01_cod_produto, ck08_qtd_itens, ck08_valor_total, ck08ck07_cod_carrinho_compras) VALUES
@@ -267,14 +283,22 @@ INSERT INTO public.ck08_produto_pedido
         (4, 2, 8, 20.4, 2),
         (5, 6, 4, 11.96, 3);
 
+    SELECT pg_catalog.setval('public.ck08_produto_pedido_ck08_cod_produto_pedido_seq', 6, true);
+
+
 INSERT INTO public.ck10_status_compra
     (ck10_cod_status_compra, ck10_descricao) VALUES
         (1, 'ABERTO'),
         (2, 'EM PROCESSAMENTO'),
         (3, 'CONCLUÍDO');
 
+    SELECT pg_catalog.setval('public.ck10_status_compra_ck10_cod_status_compra_seq', 4, true);
+
+
 INSERT INTO  public.ck09_compra
     (ck09_cod_compra, ck09_cod_rastreio, ck09_numero_pedido, ck09ck10_cod_status, ck09ck05_cod_pagamento) VALUES
         (1, 'AA123456789BR', '11111-21', 1, 1),
         (2, 'AA987654321BR', '21453-01', 2, 2),
         (3, 'AA100833276BR', '14788-55', 3, 3);
+
+    SELECT pg_catalog.setval('public.ck09_compra_ck09_cod_compra_seq', 4, true);

@@ -92,4 +92,8 @@ public class CarrinhoComprasService {
         return carrinhoComprasRepository.save(carrinhoCompras);
     }
 
+    public List<CarrinhoCompras> buscaPorClienteId(Long clienteId){
+        return carrinhoComprasRepository.findAllByCliente_Id(clienteId);
+
+    }
 }
