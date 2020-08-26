@@ -15,4 +15,6 @@ public interface ProdutoPedidoRepository extends JpaRepository<ProdutoPedido, Lo
 
     List<ProdutoPedido> findAllByCarrinhoCompras(CarrinhoCompras carrinho);
 
+    Optional<List<ProdutoPedido>> findAllByProduto(Produto produto);
+
 }

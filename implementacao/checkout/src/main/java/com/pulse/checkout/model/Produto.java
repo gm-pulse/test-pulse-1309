@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -28,7 +29,7 @@ public class Produto implements Serializable {
     @Column(name = "CK01_DESCRICAO")
     private String descricao;
 
-    @NotBlank(message = "O valor unitário do produto não pode ser nulo")
+    @NotNull(message = "O valor unitário do produto não pode ser nulo")
     @Column(name = "CK01_VALOR_UNITARIO")
     private BigDecimal valorUnitario;
 
