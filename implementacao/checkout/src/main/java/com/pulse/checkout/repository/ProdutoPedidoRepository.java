@@ -13,7 +13,7 @@ public interface ProdutoPedidoRepository extends JpaRepository<ProdutoPedido, Lo
 
     Optional<ProdutoPedido> findByProdutoAndCarrinhoCompras(Produto produto, CarrinhoCompras carrinho);
 
-    List<ProdutoPedido> findAllByCarrinhoCompras(CarrinhoCompras carrinho);
+    Optional<List<ProdutoPedido>> findAllByCarrinhoCompras(CarrinhoCompras carrinho);
 
     Optional<List<ProdutoPedido>> findAllByProduto(Produto produto);
 

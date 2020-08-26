@@ -161,6 +161,7 @@ create table public.ck08_produto_pedido
 	ck08ck07_cod_carrinho_compras bigint not null
 		constraint fkck08ck07_pedido_carrinho
 			references public.ck07_carrinho_compras
+			on delete cascade
 );
 
 alter table public.ck08_produto_pedido owner to postgres;

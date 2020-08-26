@@ -69,7 +69,12 @@ public class ProdutoPedidoService {
     }
 
     public List<ProdutoPedido> listarProdutosPedidosDeCarrinho(CarrinhoCompras carrinhoCompras){
-        return produtoPedidoRepository.findAllByCarrinhoCompras(carrinhoCompras);
+        return produtoPedidoRepository.findAllByCarrinhoCompras(carrinhoCompras).get();
+    }
+
+    public ProdutoPedido buscaPorId(Long id) {
+        return produtoPedidoRepository.findById(id)
+                .orElseThrow(() -> new CheckoutCustomException("Produto Pedido com ID " + id + " inexiste no banco"));
     }
 
 }

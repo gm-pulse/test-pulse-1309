@@ -5,11 +5,14 @@ import com.pulse.checkout.model.CarrinhoCompras;
 import com.pulse.checkout.model.Produto;
 import com.pulse.checkout.model.ProdutoPedido;
 import com.pulse.checkout.repository.CarrinhoComprasRepository;
+import com.pulse.checkout.repository.PagamentoRepository;
+import com.pulse.checkout.repository.ProdutoPedidoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -19,16 +22,18 @@ public class CarrinhoComprasService {
 
     private final ProdutoPedidoService produtoPedidoService;
 
+    private final PagamentoRepository pagamentoRepository;
+
+    private final ProdutoService produtoService;
+
+    private final ProdutoPedidoRepository produtoPedidoRepository;
+
     public CarrinhoCompras salvar(CarrinhoCompras carrinhoCompras) {
         return criar(carrinhoCompras);
     }
 
     private CarrinhoCompras criar(CarrinhoCompras carrinhoCompras) {
 
-        if (carrinhoCompras.getId() != null) {
-            throw new CheckoutCustomException("Carrinho já existe e não pode ser criado");
-
-        }
         carrinhoCompras.setTotalItens(0);
         carrinhoCompras.setValorTotal(new BigDecimal("0.0"));
 
@@ -56,20 +61,29 @@ public class CarrinhoComprasService {
                 .orElseThrow(() -> new CheckoutCustomException("Carrinho de compras com " + id + " inexistente no banco"));
     }
 
-    public CarrinhoCompras adicionaProdutosCarrinho(Produto produto, Integer qtdItens, CarrinhoCompras carrinhoCompras) {
-        if (carrinhoCompras.getId() == null) {
+    public CarrinhoCompras adicionaProdutosCarrinho(Long produtoId, Integer qtdItens, Long carrinhoComprasId) {
+        if (carrinhoComprasId == null) {
             throw new CheckoutCustomException("Carrinho de compras não existe");
         }
+        Produto produto = produtoService.buscaPorId(produtoId);
+        CarrinhoCompras carrinhoCompras = buscaPorId(carrinhoComprasId);
         produtoPedidoService.salvar(ProdutoPedido.builder().produto(produto).qtdItens(qtdItens).carrinhoCompras(carrinhoCompras).build());
 
         return atualizaCarrinho(carrinhoCompras);
     }
 
-    public CarrinhoCompras removeProdutosCarrinho(ProdutoPedido produtoPedido, Integer qtdItens, CarrinhoCompras carrinhoCompras) {
-        if (carrinhoCompras.getId() == null) {
+    public CarrinhoCompras removeProdutosCarrinho(Long idProduto, Integer qtdItens, Long idCarrinho) {
+        if (idCarrinho == null) {
             throw new CheckoutCustomException("Carrinho de compras não existe");
         }
-        produtoPedidoService.removeProdutos(ProdutoPedido.builder().produto(produtoPedido.getProduto()).qtdItens(qtdItens).carrinhoCompras(carrinhoCompras).build(), qtdItens);
+        CarrinhoCompras carrinhoCompras = buscaPorId(idCarrinho);
+        Produto produto = produtoService.buscaPorId(idProduto);
+        Optional<ProdutoPedido> produtoPedido = produtoPedidoRepository.findByProdutoAndCarrinhoCompras(produto, carrinhoCompras);
+        if(!produtoPedido.isPresent()){
+            throw new CheckoutCustomException("Não existe o produto especificado no carrinho de compras");
+        }
+
+        produtoPedidoService.removeProdutos(produtoPedido.get(), qtdItens);
         atualizaCarrinho(carrinhoCompras);
 
         return atualizaCarrinho(carrinhoCompras);
@@ -95,5 +109,29 @@ public class CarrinhoComprasService {
     public List<CarrinhoCompras> buscaPorClienteId(Long clienteId){
         return carrinhoComprasRepository.findAllByCliente_Id(clienteId);
 
+    }
+
+    public void deletaCarrinhoPorId(Long id) {
+        CarrinhoCompras carrinho = buscaPorId(id);
+
+        verificaCarrinhoEmPagamento(carrinho);
+        verificaCarrinhoEmPedido(carrinho);
+
+        carrinhoComprasRepository.delete(carrinho);
+
+    }
+
+    private void verificaCarrinhoEmPagamento(CarrinhoCompras carrinhoCompras){
+        if(pagamentoRepository.findAllByCarrinhoCompras(carrinhoCompras).isPresent()){
+            throw new CheckoutCustomException("O carrinho está incluso em um pagamento e não pode ser excluído");
+        }
+    }
+
+    private void verificaCarrinhoEmPedido(CarrinhoCompras carrinhoCompras){
+        if(produtoPedidoRepository.findAllByCarrinhoCompras(carrinhoCompras).isPresent()){
+            produtoPedidoRepository.findAllByCarrinhoCompras(carrinhoCompras)
+                    .get()
+                    .forEach(produtoPedidoRepository::delete);
+        }
     }
 }

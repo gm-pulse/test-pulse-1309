@@ -6,8 +6,10 @@ import com.pulse.checkout.model.Cliente;
 import com.pulse.checkout.model.Produto;
 import com.pulse.checkout.model.ProdutoPedido;
 import com.pulse.checkout.repository.CarrinhoComprasRepository;
+import com.pulse.checkout.repository.ProdutoPedidoRepository;
 import com.pulse.checkout.services.CarrinhoComprasService;
 import com.pulse.checkout.services.ProdutoPedidoService;
+import com.pulse.checkout.services.ProdutoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -47,6 +49,12 @@ public class CarrinhoComprasServiceTest {
     ProdutoPedidoService produtoPedidoService;
 
     @Mock
+    ProdutoService produtoService;
+
+    @Mock
+    ProdutoPedidoRepository produtoPedidoRepository;
+
+    @Mock
     Produto produto;
 
     @BeforeEach
@@ -64,14 +72,6 @@ public class CarrinhoComprasServiceTest {
 
     }
 
-    @Test
-    public void lancaExcecao_AoCriarCarrinhoDeComprasJaExistente(){
-        when(carrinhoComprasRepository.save(any(CarrinhoCompras.class))).thenReturn(carrinhoCompras);
-
-        CarrinhoCompras novoCarrinhoCompras = CarrinhoCompras.builder().id(1L).valorTotal(new BigDecimal("150.0")).totalItens(3).cliente(cliente).build();
-
-        assertThrows(CheckoutCustomException.class, () -> carrinhoComprasService.salvar(novoCarrinhoCompras));
-    }
 
     @Test
     public void retornaCarrinhoComprasAlterado_AoAlterarCarrinhoCompras(){
@@ -137,8 +137,10 @@ public class CarrinhoComprasServiceTest {
         when(produtoPedidoService.listarProdutosPedidosDeCarrinho(any(CarrinhoCompras.class))).thenReturn(Arrays.asList(produtoPedido, produtoPedido, produtoPedido));
         when(produtoPedido.getQtdItens()).thenReturn(3);
         when(produtoPedido.getValorTotal()).thenReturn(new BigDecimal("150.0"));
+        when(produtoService.buscaPorId(any(Long.class))).thenReturn(produto);
+        when(carrinhoComprasRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(carrinhoCompras));
 
-        CarrinhoCompras carrinhoComprasAAdicionar =  carrinhoComprasService.adicionaProdutosCarrinho(produto,1, carrinhoCompras);
+        CarrinhoCompras carrinhoComprasAAdicionar =  carrinhoComprasService.adicionaProdutosCarrinho(produto.getId(),1, carrinhoCompras.getId());
 
         assertEquals(carrinhoCompras.getId(), carrinhoComprasAAdicionar.getId());
         assertEquals(9, carrinhoComprasAAdicionar.getTotalItens());
@@ -151,8 +153,11 @@ public class CarrinhoComprasServiceTest {
 
         when(carrinhoComprasRepository.findById(any(Long.class))).thenReturn(Optional.of(carrinhoCompras));
         when(carrinhoComprasRepository.save(any(CarrinhoCompras.class))).thenReturn(carrinhoCompras);
+        when(produto.getId()).thenReturn(1L);
+        when(produtoService.buscaPorId(any(Long.class))).thenReturn(produto);
+        when(carrinhoComprasRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(carrinhoCompras));
 
-        assertThrows(CheckoutCustomException.class, () -> carrinhoComprasService.adicionaProdutosCarrinho(produto, 1, carrinhoComprasAAdicionar));
+        assertThrows(CheckoutCustomException.class, () -> carrinhoComprasService.adicionaProdutosCarrinho(produto.getId(), 1, carrinhoComprasAAdicionar.getId()));
 
     }
 
@@ -164,8 +169,11 @@ public class CarrinhoComprasServiceTest {
         when(produtoPedidoService.listarProdutosPedidosDeCarrinho(any(CarrinhoCompras.class))).thenReturn(Arrays.asList(produtoPedido, produtoPedido, produtoPedido));
         when(produtoPedido.getQtdItens()).thenReturn(3);
         when(produtoPedido.getValorTotal()).thenReturn(new BigDecimal("150.0"));
-
-        CarrinhoCompras carrinhoComprasAAdicionar =  carrinhoComprasService.removeProdutosCarrinho(produtoPedido, 1, carrinhoCompras);
+        when(produto.getId()).thenReturn(1L);
+        when(produtoService.buscaPorId(any(Long.class))).thenReturn(produto);
+        when(carrinhoComprasRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(carrinhoCompras));
+        when(produtoPedidoRepository.findByProdutoAndCarrinhoCompras(any(Produto.class), any(CarrinhoCompras.class))).thenReturn(Optional.of(produtoPedido));
+        CarrinhoCompras carrinhoComprasAAdicionar =  carrinhoComprasService.removeProdutosCarrinho(produtoPedido.getId(), 1, carrinhoCompras.getId());
 
         assertEquals(carrinhoCompras.getId(), carrinhoComprasAAdicionar.getId());
         assertEquals(9, carrinhoComprasAAdicionar.getTotalItens());
@@ -179,7 +187,7 @@ public class CarrinhoComprasServiceTest {
         when(carrinhoComprasRepository.findById(any(Long.class))).thenReturn(Optional.of(carrinhoCompras));
         when(carrinhoComprasRepository.save(any(CarrinhoCompras.class))).thenReturn(carrinhoCompras);
 
-        assertThrows(CheckoutCustomException.class, () -> carrinhoComprasService.removeProdutosCarrinho(produtoPedido, 1, carrinhoComprasAAdicionar));
+        assertThrows(CheckoutCustomException.class, () -> carrinhoComprasService.removeProdutosCarrinho(produtoPedido.getId(), 1, carrinhoComprasAAdicionar.getId()));
 
     }
 }
