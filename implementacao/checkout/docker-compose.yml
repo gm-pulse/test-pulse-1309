@@ -1,0 +1,28 @@
+version: '3'
+services:
+  docker-app:
+    container_name: checkout
+    image: checkout-app
+    build:
+      ./
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    network_mode: bridge
+    links:
+      - postgres
+  postgres:
+    image: postgres:12.1
+    container_name: postgres
+    network_mode: bridge
+    expose:
+      - 5432
+    environment:
+      - POSTGRES_DB=checkout
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+    ports:
+      - "5434:5432"
+    volumes:
+        - ./db/data/init.sql:/docker-entrypoint-initdb.d/init.sql
