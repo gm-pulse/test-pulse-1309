@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -21,6 +23,7 @@ public class PagamentoService {
     private final TransportadoraService transportadoraService;
     private final EnderecoService enderecoService;
     private final CompraService compraService;
+    private final ClienteService clienteService;
 
     public Pagamento salvar(Pagamento pagamento) {
         verificaCarrinhoCompras(pagamento.getCarrinhoCompras());
@@ -133,6 +136,17 @@ public class PagamentoService {
 
     private BigDecimal calculaValorPagamento(CarrinhoCompras carrinhoCompras, Transportadora transportadora) {
         return carrinhoCompras.getValorTotal().add(transportadora.getValorFrete());
+    }
+
+    public List<Pagamento> listaPorClienteId(Long clienteId){
+        Cliente cliente = clienteService.buscaPorId(clienteId);
+        Optional<List<Pagamento>> pagamentos = pagamentoRepository.findAllByCarrinhoCompras_Cliente(cliente);
+
+        if(!pagamentos.isPresent()){
+            throw new CheckoutCustomException("O cliente "+cliente.getNome() + " não possui nenhum pagamento");
+        }
+        return pagamentos.get();
+
     }
 
 

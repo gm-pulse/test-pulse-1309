@@ -16,4 +16,6 @@ public interface PagamentoRepository extends JpaRepository<Pagamento, Long> {
     Optional<List<Pagamento>> findAllByTipoPagamento(TipoPagamento tipoPagamento);
 
     Optional<List<Pagamento>> findAllByCarrinhoCompras(CarrinhoCompras carrinhoCompras);
+
+    Optional<List<Pagamento>> findAllByCarrinhoCompras_Cliente(Cliente cliente);
 }

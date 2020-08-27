@@ -1,6 +1,6 @@
 package com.pulse.checkout.controller;
 
-import com.pulse.checkout.model.Cliente;
+import com.pulse.checkout.model.CarrinhoCompras;
 import com.pulse.checkout.model.Pagamento;
 import com.pulse.checkout.repository.PagamentoRepository;
 import com.pulse.checkout.services.PagamentoService;
@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.http.ResponseEntity.noContent;
@@ -29,21 +28,36 @@ public class PagamentoController {
 
     @GetMapping("/pagamentos")
     @ApiOperation(value = "Retorna os pagamentos cadastrados")
-    public ResponseEntity<List<Pagamento>> buscarTodos(){
+    public ResponseEntity<List<Pagamento>> buscarTodos() {
         List<Pagamento> pagamentosCadastrados = pagamentoRepository.findAll();
 
-        if(pagamentosCadastrados.isEmpty()) {
+        if (pagamentosCadastrados.isEmpty()) {
             return noContent().build();
-        }else{
+        } else {
             return ok(pagamentosCadastrados);
         }
     }
 
     @PostMapping("/pagamento/{idTipoPagamento}/{idCarrinho}/{idEnderecoEntrega}/{idTransportadora}")
     @ApiOperation(value = "4 e 5. Informa endereço, frete(transportadora) e forma pagamento")
-    public ResponseEntity<Pagamento>fazCheckout(@PathVariable Long idTipoPagamento, @PathVariable Long idCarrinho,@PathVariable Long idEnderecoEntrega,@PathVariable Long idTransportadora ){
+    public ResponseEntity<Pagamento> fazCheckout(@PathVariable Long idTipoPagamento, @PathVariable Long idCarrinho, @PathVariable Long idEnderecoEntrega, @PathVariable Long idTransportadora) {
         Pagamento novoPagamento = pagamentoService.fazCheckout(idTipoPagamento, idCarrinho, idTransportadora, idEnderecoEntrega);
 
         return new ResponseEntity<>(novoPagamento, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/pagamentosPorClienteId/{clienteId}")
+    @ApiOperation(value = "Retorna os pagamentos realizados pelo cliente")
+    public ResponseEntity<List<Pagamento>> buscarPorClienteId(@PathVariable Long clienteId) {
+        List<Pagamento> pagamentosPorClienteId = pagamentoService.listaPorClienteId(clienteId);
+
+        return ok(pagamentosPorClienteId);
+
+    }
+
+    @GetMapping("/pagamentoPorId/{id}")
+    @ApiOperation(value = "Busca Pagamento pelo id")
+    public ResponseEntity<Pagamento> buscaPorId(@PathVariable Long id){
+        return ok(pagamentoService.buscaPorId(id));
     }
 }
