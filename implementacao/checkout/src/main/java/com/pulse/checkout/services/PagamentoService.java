@@ -149,5 +149,18 @@ public class PagamentoService {
 
     }
 
+    public Pagamento alteraTipoPagamento(Long idPagamento, Long idTipoPagamento)
+    {
+        Pagamento pagamento = buscaPorId(idPagamento);
+        if(pagamento.getCompra().getStatusCompra().getId().equals(3L)){
+            throw new CheckoutCustomException("A compra já foi concluída e não pode ser alterado seu tipo pagamento");
+        }
+        TipoPagamento tipoPagamento = tipoPagamentoService.buscaPorId(idTipoPagamento);
+        pagamento.setTipoPagamento(tipoPagamento);
+
+        return pagamentoRepository.save(pagamento);
+    }
+
+
 
 }
