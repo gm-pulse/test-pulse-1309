@@ -60,4 +60,11 @@ public class PagamentoController {
     public ResponseEntity<Pagamento> buscaPorId(@PathVariable Long id){
         return ok(pagamentoService.buscaPorId(id));
     }
+
+    @PutMapping("/pagamentoUptadeTipo/{idPagamento}/{idTipoPagamento}")
+    @ApiOperation(value = "Atualiza o tipo de pagamento se ainda não estiver concluído")
+    public ResponseEntity<Pagamento> alterarTipoPagamento(@PathVariable Long idTipoPagamento, @PathVariable Long idPagamento){
+        Pagamento pagamentoAlterado = pagamentoService.alteraTipoPagamento(idPagamento, idTipoPagamento);
+        return new ResponseEntity<>(pagamentoAlterado, HttpStatus.CREATED);
+    }
 }
