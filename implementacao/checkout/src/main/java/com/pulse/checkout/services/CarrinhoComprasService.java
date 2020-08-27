@@ -2,6 +2,7 @@ package com.pulse.checkout.services;
 
 import com.pulse.checkout.exception.CheckoutCustomException;
 import com.pulse.checkout.model.CarrinhoCompras;
+import com.pulse.checkout.model.Cliente;
 import com.pulse.checkout.model.Produto;
 import com.pulse.checkout.model.ProdutoPedido;
 import com.pulse.checkout.repository.CarrinhoComprasRepository;
@@ -11,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +30,8 @@ public class CarrinhoComprasService {
 
     private final ProdutoPedidoRepository produtoPedidoRepository;
 
+    private final ClienteService clienteService;
+
     public CarrinhoCompras salvar(CarrinhoCompras carrinhoCompras) {
         return criar(carrinhoCompras);
     }
@@ -38,6 +42,12 @@ public class CarrinhoComprasService {
         carrinhoCompras.setValorTotal(new BigDecimal("0.0"));
 
         return carrinhoComprasRepository.save(carrinhoCompras);
+    }
+
+    public CarrinhoCompras clienteCriaCarrinho(Long idCliente){
+        Cliente cliente = clienteService.buscaPorId(idCliente);
+
+        return criar(CarrinhoCompras.builder().cliente(cliente).build());
     }
 
     public CarrinhoCompras alterar(CarrinhoCompras carrinhoCompras) {
@@ -102,10 +112,9 @@ public class CarrinhoComprasService {
                         mapToInt(ProdutoPedido::getQtdItens).sum()
         );
         carrinhoCompras.setValorTotal(
-                BigDecimal.valueOf(
-                        produtosCarrinho.stream().
-                                mapToInt(produtoPedido -> produtoPedido.getValorTotal().intValue()).sum())
-
+                        produtosCarrinho.stream()
+                                .map(ProdutoPedido::getValorTotal)
+                                .reduce(BigDecimal.ZERO,BigDecimal::add).setScale(2, RoundingMode.HALF_UP)
         );
 
         return carrinhoComprasRepository.save(carrinhoCompras);

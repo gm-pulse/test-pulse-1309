@@ -58,6 +58,14 @@ public class CarrinhoComprasController {
         }
     }
 
+    @PostMapping("/carrinhoCompras/{idCliente}")
+    @ApiOperation(value = "1. O cliente cria um carrinho de compras")
+    public ResponseEntity<CarrinhoCompras>clienteCriaCarrinho(@Valid @PathVariable Long idCliente){
+        CarrinhoCompras novoCarrinhoCompras = carrinhoComprasService.clienteCriaCarrinho(idCliente);
+
+        return new ResponseEntity<>(novoCarrinhoCompras,HttpStatus.CREATED);
+    }
+
     @PostMapping("/carrinhoCompras")
     @ApiOperation(value = "Cadastra um novo carrinho de compras")
     public ResponseEntity<CarrinhoCompras>cadastrar(@Valid @RequestBody CarrinhoCompras carrinhoCompras){
@@ -73,14 +81,14 @@ public class CarrinhoComprasController {
     }
 
     @PutMapping("carrinhoCompras/adicionarItens/{idProduto}/{qtdProdutos}/{idCarrinho}/")
-    @ApiOperation(value = "Adiciona produtos no carrinho")
+    @ApiOperation(value = "2. O cliente coloca produtos nesse carrinho de compras;")
     public ResponseEntity<CarrinhoCompras>adicionaProdutos(@PathVariable Long idProduto, @PathVariable Integer qtdProdutos, @PathVariable Long idCarrinho){
         CarrinhoCompras carrinhoComprasAtualizado =  carrinhoComprasService.adicionaProdutosCarrinho(idProduto, qtdProdutos, idCarrinho);
         return new ResponseEntity<>(carrinhoComprasAtualizado, HttpStatus.CREATED);
     }
 
     @PutMapping("carrinhoCompras/removerItens/{idProduto}/{idCarrinho}/{qtdProdutos}")
-    @ApiOperation(value = "Remove produtos no carrinho")
+    @ApiOperation(value = "2.Remove produtos no carrinho")
     public ResponseEntity<CarrinhoCompras>removeProdutos(@PathVariable Long idProduto, @PathVariable Long idCarrinho, @PathVariable Integer qtdProdutos){
         CarrinhoCompras carrinhoComprasAtualizado =  carrinhoComprasService.removeProdutosCarrinho(idProduto, qtdProdutos, idCarrinho);
         return new ResponseEntity<>(carrinhoComprasAtualizado, HttpStatus.CREATED);

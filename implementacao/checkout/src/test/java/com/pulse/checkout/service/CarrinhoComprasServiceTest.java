@@ -150,7 +150,7 @@ public class CarrinhoComprasServiceTest {
 
         assertEquals(carrinhoCompras.getId(), carrinhoComprasAAdicionar.getId());
         assertEquals(9, carrinhoComprasAAdicionar.getTotalItens());
-        assertEquals(new BigDecimal("450"), carrinhoComprasAAdicionar.getValorTotal());
+        assertEquals(new BigDecimal("450.00"), carrinhoComprasAAdicionar.getValorTotal());
 
     }
 
@@ -183,7 +183,7 @@ public class CarrinhoComprasServiceTest {
 
         assertEquals(carrinhoCompras.getId(), carrinhoComprasAAdicionar.getId());
         assertEquals(9, carrinhoComprasAAdicionar.getTotalItens());
-        assertEquals(new BigDecimal("450"), carrinhoComprasAAdicionar.getValorTotal());
+        assertEquals(new BigDecimal("450.00"), carrinhoComprasAAdicionar.getValorTotal());
 
     }
 

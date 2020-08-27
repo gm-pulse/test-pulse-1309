@@ -3,10 +3,13 @@ package com.pulse.checkout.services;
 import com.pulse.checkout.exception.CheckoutCustomException;
 import com.pulse.checkout.model.Compra;
 import com.pulse.checkout.model.Pagamento;
+import com.pulse.checkout.model.StatusCompra;
 import com.pulse.checkout.repository.CompraRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 
@@ -31,7 +34,7 @@ public class CompraService {
         }
         compra.setStatusCompra(statusCompraService.buscaPorId(3L));
         compra.setNumPedido(geraNumeroPedido());
-        compra.setCodRastreio(geraNumeroRastreio());
+        compra.setCodRastreio(geraCodigoRastreio());
 
         return compraRepository.save(compra);
     }
@@ -51,7 +54,7 @@ public class CompraService {
         return random.ints(1, min, max).limit(1).findFirst().getAsInt();
     }
 
-    private String geraNumeroRastreio(){
+    private String geraCodigoRastreio(){
         Random random = new Random();
 
         Integer valorAleatorio = geraValorAleatorio(random, 100000000, 999999999);
@@ -61,17 +64,17 @@ public class CompraService {
 
     public Compra buscaPorId(Long id){
         return compraRepository.findById(id)
-                .orElseThrow(() -> new CheckoutCustomException("Compra com " + id + " inexistente no banco"));
+                .orElseThrow(() -> new CheckoutCustomException("Compra com ID" + id + " inexistente no banco"));
     }
 
     public Compra buscaPorNumeroPedido(String numeroPedido){
         return compraRepository.findByNumPedido(numeroPedido)
-                .orElseThrow(() -> new CheckoutCustomException("Compra com " + numeroPedido + " inexistente no banco"));
+                .orElseThrow(() -> new CheckoutCustomException("Compra com número de pedido " + numeroPedido + " inexistente no banco"));
     }
 
     public Compra buscaPorCodigoRastreio(String codigoRastreio){
         return compraRepository.findByCodRastreio(codigoRastreio)
-                .orElseThrow(() -> new CheckoutCustomException("Compra com " + codigoRastreio + " inexistente no banco"));
+                .orElseThrow(() -> new CheckoutCustomException("Compra com código de rastreio" + codigoRastreio + " inexistente no banco"));
     }
     public Compra alterar(Compra compra){
         if(compra.getId() == null){
@@ -85,5 +88,13 @@ public class CompraService {
                 );
     }
 
+    public List<Compra> listaComprasPorStatusCompraId(Long statusCompraId){
+        StatusCompra statusCompra = statusCompraService.buscaPorId(statusCompraId);
+        Optional<List<Compra>> compras = compraRepository.findAllByStatusCompra(statusCompra);
+        if(!compras.isPresent()){
+            throw new CheckoutCustomException("Não existem compras com o status "+ statusCompra.getDescricao());
+        }
+        return compras.get();
+    }
 
 }

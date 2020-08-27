@@ -40,12 +40,10 @@ public class PagamentoController {
     }
 
     @PostMapping("/pagamento/{idTipoPagamento}/{idCarrinho}/{idEnderecoEntrega}/{idTransportadora}")
-    @ApiOperation(value = "Cadastra um novo pagamento (realiza Checkout)")
+    @ApiOperation(value = "4 e 5. Informa endereço, frete(transportadora) e forma pagamento")
     public ResponseEntity<Pagamento>fazCheckout(@PathVariable Long idTipoPagamento, @PathVariable Long idCarrinho,@PathVariable Long idEnderecoEntrega,@PathVariable Long idTransportadora ){
-        Pagamento novoPagamento = pagamentoService.criaPagamento(idTipoPagamento, idCarrinho, idTransportadora, idEnderecoEntrega);
+        Pagamento novoPagamento = pagamentoService.fazCheckout(idTipoPagamento, idCarrinho, idTransportadora, idEnderecoEntrega);
+
         return new ResponseEntity<>(novoPagamento, HttpStatus.CREATED);
     }
-
-
-
 }

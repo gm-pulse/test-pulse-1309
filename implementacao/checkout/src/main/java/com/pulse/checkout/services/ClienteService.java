@@ -3,6 +3,7 @@ package com.pulse.checkout.services;
 import com.pulse.checkout.exception.CheckoutCustomException;
 import com.pulse.checkout.model.Cliente;
 import com.pulse.checkout.model.Endereco;
+import com.pulse.checkout.repository.CarrinhoComprasRepository;
 import com.pulse.checkout.repository.ClienteRepository;
 import com.pulse.checkout.repository.EnderecoRepository;
 import lombok.AllArgsConstructor;
@@ -14,7 +15,7 @@ public class ClienteService {
 
     private final ClienteRepository clienteRepository;
 
-    private final CarrinhoComprasService carrinhoComprasService;
+    private final CarrinhoComprasRepository carrinhoComprasRepository;
 
     private final EnderecoRepository enderecoRepository;
 
@@ -65,7 +66,7 @@ public class ClienteService {
     }
 
     private void verificaPossuiCarrinhodeCompras(Long id){
-        if(!carrinhoComprasService.buscaPorClienteId(id).isEmpty()){
+        if(!carrinhoComprasRepository.findAllByCliente_Id(id).isEmpty()){
             throw new CheckoutCustomException("Cliente possui carrinho de compras e não pode ser excluído");
         }
     }

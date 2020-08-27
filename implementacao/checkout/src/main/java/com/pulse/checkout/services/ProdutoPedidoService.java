@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,7 +50,7 @@ public class ProdutoPedidoService {
     }
 
     private BigDecimal calculaValorTotalProdutoPedido(Integer qtdItens, BigDecimal valorUnitario) {
-        return BigDecimal.valueOf(qtdItens).multiply(valorUnitario);
+        return valorUnitario.multiply(new BigDecimal(qtdItens).setScale(1, RoundingMode.HALF_UP));
     }
 
     private ProdutoPedido adicionarItensAMaisAProdutoPedido(ProdutoPedido produtoPedido, Integer qtdItens, BigDecimal valorunitarioProduto) {

@@ -31,7 +31,7 @@ public class PagamentoService {
         return pagamentoRepository.save(verificaValorPagamento(pagamento));
     }
 
-    public Pagamento criaPagamento(Long idTipoPagamento, Long idCarrinho, Long idTransportadora, Long idEnderecoEntrega){
+    public Pagamento fazCheckout(Long idTipoPagamento, Long idCarrinho, Long idTransportadora, Long idEnderecoEntrega){
         TipoPagamento tipoPagamento = tipoPagamentoService.buscaPorId(idTipoPagamento);
         CarrinhoCompras carrinhoCompras = carrinhoComprasService.buscaPorId(idCarrinho);
         Endereco enderecoEntrega = enderecoService.buscaPorId(idEnderecoEntrega);

@@ -67,7 +67,7 @@ public class ProdutoPedidoServiceTest {
 
         assertEquals(novoProdutoPedido.getId(), produtoPedido.getId());
         assertEquals(4 ,novoProdutoPedido.getQtdItens());
-        assertEquals( new BigDecimal("60.0"),novoProdutoPedido.getValorTotal());
+        assertEquals( new BigDecimal("60.00"),novoProdutoPedido.getValorTotal());
 
     }
 
@@ -90,7 +90,7 @@ public class ProdutoPedidoServiceTest {
         ProdutoPedido novoProdutoPedido =  produtoPedidoService.removeProdutos(produtoPedido, 1);
         assertEquals(produtoPedido.getId(), novoProdutoPedido.getId());
         assertEquals(1, novoProdutoPedido.getQtdItens());
-        assertEquals(new BigDecimal("15.0"),novoProdutoPedido.getValorTotal());
+        assertEquals(new BigDecimal("15.00"),novoProdutoPedido.getValorTotal());
     }
 
     @Test
