@@ -65,8 +65,11 @@ public class CarrinhoComprasService {
         if (carrinhoComprasId == null) {
             throw new CheckoutCustomException("Carrinho de compras não existe");
         }
-        Produto produto = produtoService.buscaPorId(produtoId);
         CarrinhoCompras carrinhoCompras = buscaPorId(carrinhoComprasId);
+        verificaCarrinhoEmPagamento(carrinhoCompras);
+
+        Produto produto = produtoService.buscaPorId(produtoId);
+
         produtoPedidoService.salvar(ProdutoPedido.builder().produto(produto).qtdItens(qtdItens).carrinhoCompras(carrinhoCompras).build());
 
         return atualizaCarrinho(carrinhoCompras);
@@ -77,6 +80,7 @@ public class CarrinhoComprasService {
             throw new CheckoutCustomException("Carrinho de compras não existe");
         }
         CarrinhoCompras carrinhoCompras = buscaPorId(idCarrinho);
+        verificaCarrinhoEmPagamento(carrinhoCompras);
         Produto produto = produtoService.buscaPorId(idProduto);
         Optional<ProdutoPedido> produtoPedido = produtoPedidoRepository.findByProdutoAndCarrinhoCompras(produto, carrinhoCompras);
         if(!produtoPedido.isPresent()){
@@ -84,12 +88,13 @@ public class CarrinhoComprasService {
         }
 
         produtoPedidoService.removeProdutos(produtoPedido.get(), qtdItens);
-        atualizaCarrinho(carrinhoCompras);
 
         return atualizaCarrinho(carrinhoCompras);
     }
 
     private CarrinhoCompras atualizaCarrinho(CarrinhoCompras carrinhoCompras) {
+
+        verificaCarrinhoEmPagamento(carrinhoCompras);
         List<ProdutoPedido> produtosCarrinho = produtoPedidoService.listarProdutosPedidosDeCarrinho(carrinhoCompras);
 
         carrinhoCompras.setTotalItens(
@@ -123,7 +128,7 @@ public class CarrinhoComprasService {
 
     private void verificaCarrinhoEmPagamento(CarrinhoCompras carrinhoCompras){
         if(pagamentoRepository.findAllByCarrinhoCompras(carrinhoCompras).isPresent()){
-            throw new CheckoutCustomException("O carrinho está incluso em um pagamento e não pode ser excluído");
+            throw new CheckoutCustomException("Já foi realizado o pagamento para o carrinho e ele não pode ser excluído ou alterado");
         }
     }
 

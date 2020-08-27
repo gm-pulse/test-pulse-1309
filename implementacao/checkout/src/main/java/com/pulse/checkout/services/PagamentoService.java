@@ -37,6 +37,8 @@ public class PagamentoService {
         Endereco enderecoEntrega = enderecoService.buscaPorId(idEnderecoEntrega);
         Transportadora transportadora = transportadoraService.buscaPorId(idTransportadora);
 
+        verificaCarrinhoComprasJaPago(carrinhoCompras);
+
         Pagamento novoPagamento = new Pagamento(null, tipoPagamento, carrinhoCompras, transportadora,enderecoEntrega,null,null);
 
         novoPagamento.setCompra(compraService.salvar(new Compra()));
@@ -45,6 +47,12 @@ public class PagamentoService {
 
         return novoPagamento;
 
+    }
+
+    private void verificaCarrinhoComprasJaPago(CarrinhoCompras carrinhoCompras) {
+        if(pagamentoRepository.findAllByCarrinhoCompras(carrinhoCompras).isPresent()){
+            throw new CheckoutCustomException("Já existe um pagamento para o carrinho de compras selecionado");
+        }
     }
 
     public Pagamento alterar(Pagamento pagamento) {
