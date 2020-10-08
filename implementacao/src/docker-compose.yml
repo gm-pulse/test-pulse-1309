@@ -1,0 +1,38 @@
+version: '3.4'
+
+networks: 
+    testepulse:
+        driver: bridge
+
+services: 
+    api:
+        image: aspnetapp:latest
+        depends_on: 
+            - "dbimage"
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports: 
+            - "8080:80"
+        environment: 
+            DB_CONNECTION_STRING: "host:dbimage;port=5432;database=checkoutdb;username=pulseusr;password=_62wjr?b7t6?86fdn65mg"
+        networks: 
+            - testepulse
+
+    dbimage:
+        image: postgres:latest
+        ports:
+            - "5432:5432"
+        restart: always
+        volumes:
+            - db_volume:/var/lib/postgres/data
+        environment: 
+            POSTGRES_USER: "pulseusr"
+            POSTGRES_PASSWORD: "_62wjr?b7t6?86fdn65mg"
+            POSTGRES_DB: "checkoutdb"
+        networks: 
+            - testepulse
+
+volumes: 
+    db_volume:
+        

@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using services;
+using services.Endereco;
 
 namespace api
 {
@@ -30,7 +31,9 @@ namespace api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-             services.AddScoped<IPasswordVerification,PasswordVerification>();
+            services.AddScoped<IPasswordVerification,PasswordVerification>();
+            services.AddScoped<IConsultaEndereco,ConsultaEnderecoService>();
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1",
