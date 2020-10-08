@@ -18,7 +18,7 @@ namespace test
         public void ConsigoValidarUmCodigoRecebido()
         {
             IPasswordVerification passwordVerificationService = new PasswordVerification();
-            var result = passwordVerificationService.ValidarCodigoAsync("+5585996549759","429412").Result;
+            var result = passwordVerificationService.ValidarCodigoAsync("+5585996549759","259764").Result;
             Assert.True(result.IsValid);
         }
 

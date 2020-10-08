@@ -50,6 +50,7 @@ namespace api.Controllers
         /// 
         /// </summary>
         /// <param name="telefoneCliente"></param>
+        /// <param name="codigo"></param>
         /// <returns></returns>
         /// <response code="422">Se os parametros para validar um código de validação forem inválidos</response>
         /// <response code="400">Se ocorrer alguma falha na validação de um código de validação ou se o código for incorreto</response>

@@ -2,6 +2,8 @@ using System;
 using core.Entidades;
 using core.Entidades.Cielo;
 using core.Inputs;
+using core.Results;
+using Newtonsoft.Json;
 
 namespace core.Extensions
 {
@@ -30,6 +32,16 @@ namespace core.Extensions
                     }
                 }
             };        
+        }
+
+        public static CobrancaResult ToCobrancaResult(this CieloResult result){
+            var valorTransacao = result.Payment.Amount.ToString();
+            return new CobrancaResult{
+                Aprovado = result.Payment.Status == 1,
+                Data = DateTime.Now,
+                Valor = float.Parse(valorTransacao.Insert(valorTransacao.Length -2,".")),
+                DetalhesPagamento = JsonConvert.SerializeObject(result)
+            };
         }
     }
 }

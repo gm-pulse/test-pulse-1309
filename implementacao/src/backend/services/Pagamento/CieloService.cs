@@ -18,7 +18,7 @@ namespace services.Pagamento
             requestHeader.Add("MerchantId","e4b52cd8-ecec-4f12-82d6-b6bf2df930af");
             requestHeader.Add("MerchantKey","NUZJGVRBPBIFJRNVDAMWDPRWGSWSJUUGTWVKYDDA");
             var result = await RemoteClient<CieloResult>.ExecutePost("https://apisandbox.cieloecommerce.cielo.com.br/1/sales",requestData,requestHeader);
-            return new CobrancaResult();
+            return result.ToCobrancaResult();
         }
     }
 }
