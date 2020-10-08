@@ -16,7 +16,6 @@ namespace api
         {
             Log.Logger = new LoggerConfiguration()
             .Enrich.FromLogContext()
-            .WriteTo.Console()
             .WriteTo.Seq("http://localhost:5341") 
             .CreateLogger();
 
