@@ -1,9 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <ProjectReference Include="..\core\core.csproj"/>
+    <ProjectReference Include="..\infra\infra.csproj"/>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Twilio" Version="5.47.2"/>
+    <PackageReference Include="Serilog" Version="2.10.0"/>
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>

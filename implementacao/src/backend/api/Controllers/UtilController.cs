@@ -1,8 +1,10 @@
 using System.Threading.Tasks;
 using core.Interfaces;
 using core.Results;
+using infra;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Controllers
 {
@@ -12,10 +14,12 @@ namespace api.Controllers
     public class UtilController: ControllerBase
     {
         private readonly IConsultaEndereco consultaEnderecoService;
+        private readonly PulseTesteContext context;
 
-        public UtilController(IConsultaEndereco consultaEnderecoService)
+        public UtilController(IConsultaEndereco consultaEnderecoService, PulseTesteContext context)
         {
             this.consultaEnderecoService = consultaEnderecoService;
+            this.context = context;
         }
 
         /// <summary>

@@ -4,7 +4,16 @@ networks:
     testepulse:
         driver: bridge
 
-services: 
+services:
+    seqlog:
+        image: datalust/seq
+        ports:
+            - "5341:80"
+        environment: 
+            ACCEPT_EULA: "Y"
+        networks: 
+            - testepulse
+    
     api:
         image: aspnetapp:latest
         depends_on: 

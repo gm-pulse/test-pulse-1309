@@ -5,10 +5,12 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using core.Interfaces;
+using infra;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -33,7 +35,8 @@ namespace api
         {
             services.AddScoped<IPasswordVerification,PasswordVerification>();
             services.AddScoped<IConsultaEndereco,ConsultaEnderecoService>();
-            
+            services.AddScoped<ClientService>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1",
@@ -47,6 +50,16 @@ namespace api
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+
+            var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+            #if DEBUG
+                connectionString = "host=localhost;port=5432;database=checkoutdb;username=pulseusr;password=_62wjr?b7t6?86fdn65mg";
+            #endif
+            services.AddDbContext<PulseTesteContext>(options =>
+                options.UseNpgsql(
+                    connectionString
+                )
+            );
             
             services.AddControllers()
             .ConfigureApiBehaviorOptions(options =>{
