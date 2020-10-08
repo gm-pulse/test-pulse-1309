@@ -10,6 +10,13 @@ namespace services.Util
 {
     public static class RemoteClient<T>
     {
+        public static async Task<T> ExecuteGet(string url){
+            using (var client = new HttpClient())
+            {
+                var request = await client.GetAsync(url);
+                return JsonConvert.DeserializeObject<T>(await request.Content.ReadAsStringAsync());
+            }
+        }
         public static async Task<T> ExecutePost(string url, object data, Dictionary<string, string> headers){
             using (var client = new HttpClient())
             {
