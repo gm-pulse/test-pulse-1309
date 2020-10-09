@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using core.Interfaces;
 using core.Results;
@@ -5,6 +6,7 @@ using infra;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using services.Frete;
 
 namespace api.Controllers
 {
@@ -14,12 +16,14 @@ namespace api.Controllers
     public class UtilController: ControllerBase
     {
         private readonly IConsultaEndereco consultaEnderecoService;
-        private readonly PulseTesteContext context;
+        private readonly CalcularFreteService calculoFreteService;
+        
+        
 
-        public UtilController(IConsultaEndereco consultaEnderecoService, PulseTesteContext context)
+        public UtilController(IConsultaEndereco consultaEnderecoService, CalcularFreteService calculoFreteService)
         {
             this.consultaEnderecoService = consultaEnderecoService;
-            this.context = context;
+            this.calculoFreteService = calculoFreteService;
         }
 
         /// <summary>
@@ -40,9 +44,26 @@ namespace api.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cepDestino"></param>
+        /// <returns>Detalhes de um endereço a partir de um CEP</returns>
+        /// <response code="422">Se o cep informado for inválido</response>
+        /// <response code="400">Se ocorrer um erro na requisição</response>
+        /// <response code="200">Retorna os valores de frete de acordo com o cep informado para cada transportador</response>
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet("ConsultarValorFrete/{cepDestino}")]
-        public  ActionResult ConsultarValorFrete([FromRoute] string cepDestino){
-           return Ok();
+        public  async Task<ActionResult<IList<ValorFreteResult>>> ConsultarValorFrete([FromRoute] string cepDestino){
+           try{
+                if(string.IsNullOrEmpty(cepDestino))
+                    return UnprocessableEntity();
+                return Ok(await calculoFreteService.Calcular(cepDestino));
+           }catch{
+                return BadRequest();
+            }
         }
 
     }

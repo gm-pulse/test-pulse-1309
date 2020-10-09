@@ -35,6 +35,7 @@ services:
         restart: always
         volumes:
             - db_volume:/var/lib/postgres/data
+            - ./sqlscripts/:/docker-entrypoint-initdb.d/
         environment: 
             POSTGRES_USER: "pulseusr"
             POSTGRES_PASSWORD: "_62wjr?b7t6?86fdn65mg"

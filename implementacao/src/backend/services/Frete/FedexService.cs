@@ -4,7 +4,8 @@ namespace services.Frete
 {
     public class FedexService: IFreteService
     {
-        public float calcular(string cepOrigem, string cepDestino)
+        public string ProviderName => "FEDEX";
+        public float Calcular(string cepOrigem, string cepDestino)
         {
             return 45f;
         }

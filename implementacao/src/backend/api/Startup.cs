@@ -18,6 +18,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using services;
 using services.Endereco;
+using services.Frete;
 
 namespace api
 {
@@ -36,6 +37,11 @@ namespace api
             services.AddScoped<IPasswordVerification,PasswordVerification>();
             services.AddScoped<IConsultaEndereco,ConsultaEnderecoService>();
             services.AddScoped<ClientService>();
+            services.AddScoped<IFreteService,CorreioService>();
+            services.AddScoped<IFreteService,FedexService>();
+            services.AddScoped<IFreteService,JadLogService>();
+            services.AddScoped<IFreteService,MercadoEnvioService>();
+            services.AddScoped<CalcularFreteService>();
 
             services.AddSwaggerGen(c =>
             {

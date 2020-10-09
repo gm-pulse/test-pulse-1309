@@ -4,7 +4,8 @@ namespace services.Frete
 {
     public class JadLogService: IFreteService
     {
-        public float calcular(string cepOrigem, string cepDestino)
+        public string ProviderName => "JADLOG";
+        public float Calcular(string cepOrigem, string cepDestino)
         {
             return 24.7f;
         }

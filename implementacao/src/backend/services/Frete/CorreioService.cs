@@ -4,7 +4,8 @@ namespace services.Frete
 {
     public class CorreioService : IFreteService
     {
-        public float calcular(string cepOrigem, string cepDestino)
+        public string ProviderName => "CORREIOS";
+        public float Calcular(string cepOrigem, string cepDestino)
         {
             return 34.5f;
         }

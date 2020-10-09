@@ -8,7 +8,7 @@ namespace infra
     {
         public PulseTesteContext(DbContextOptions<PulseTesteContext> options):base(options){
             //this.Database.EnsureDeleted();
-            this.Database.EnsureCreated();
+            //this.Database.EnsureCreated();
         }
 
         public DbSet<Client> Clients { get; set; }
@@ -16,10 +16,13 @@ namespace infra
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Order> Orders { get; set; }
 
+        public DbSet<Carrier> Carriers { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder){
             modelBuilder.OnClientCreating();
             modelBuilder.OnAddressCreating();
             modelBuilder.OnOrderCreating();
+            modelBuilder.OnCarrierCreating();
         }
     }
 }
