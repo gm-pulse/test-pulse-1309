@@ -24,7 +24,7 @@ services:
         ports: 
             - "8080:80"
         environment: 
-            DB_CONNECTION_STRING: "host:dbimage;port=5432;database=checkoutdb;username=pulseusr;password=_62wjr?b7t6?86fdn65mg"
+            DB_CONNECTION_STRING: "host=dbimage;port=5432;database=checkoutdb;username=pulseusr;password=_62wjr?b7t6?86fdn65mg"
         networks: 
             - testepulse
 
