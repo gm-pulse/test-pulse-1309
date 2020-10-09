@@ -40,5 +40,10 @@ namespace api.Controllers
             return Ok(result);
         }
 
+        [HttpGet("ConsultarValorFrete/{cepDestino}")]
+        public  ActionResult ConsultarValorFrete([FromRoute] string cepDestino){
+           return Ok();
+        }
+
     }
 }
