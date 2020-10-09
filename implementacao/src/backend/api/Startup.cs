@@ -39,6 +39,7 @@ namespace api
             services.AddScoped<IConsultaEndereco,ConsultaEnderecoService>();
             services.AddScoped<ClientService>();
             services.AddScoped<EmailService>();
+            services.AddScoped<ParametrosService>();
 
             //Injeção de dependência dos serviços de frete
             services.AddScoped<IFreteService,CorreioService>();

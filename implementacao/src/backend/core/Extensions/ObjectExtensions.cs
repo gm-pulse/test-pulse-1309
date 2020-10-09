@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using core.Attributes;
 using core.Entidades;
 using core.Entidades.Cielo;
 using core.Enumerations;
@@ -47,11 +49,36 @@ namespace core.Extensions
         }
 
         public static string ToDescriptionString(this PagamentoProvider val){
-        DescriptionAttribute[] attributes = (DescriptionAttribute[])val
-           .GetType()
-           .GetField(val.ToString())
-           .GetCustomAttributes(typeof(DescriptionAttribute), false);
-        return attributes.Length > 0 ? attributes[0].Description : string.Empty;
+            return GetDescriptionString(val);
+        }
+
+        private static string GetDescriptionString(object obj){
+            DescriptionAttribute[] attributes = (DescriptionAttribute[])obj
+                .GetType()
+                .GetField(obj.ToString())
+                .GetCustomAttributes(typeof(DescriptionAttribute), false);
+            return attributes.Length > 0 ? attributes[0].Description : string.Empty;
+        }
+
+        public static string ToTitleString(this PagamentoProvider val){
+            return GetTitleString(val);
+        }
+
+        private static string GetTitleString(object obj){
+            TitleAttribute[] attributes = (TitleAttribute[])obj
+                .GetType()
+                .GetField(obj.ToString())
+                .GetCustomAttributes(typeof(TitleAttribute), false);
+            return attributes.Length > 0 ? attributes[0].Description : string.Empty;
+        }
+
+        public static Dictionary<string,string> ToDictionary<T>(){
+            var result = new Dictionary<string,string>();
+            Array enumValues = Enum.GetValues(typeof(T));
+            foreach (PagamentoProvider item in enumValues){
+                result.Add(GetDescriptionString(item),GetTitleString(item));
+            }
+            return result;
         }
 
         private static Random random = new Random();

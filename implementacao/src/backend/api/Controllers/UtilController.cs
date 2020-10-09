@@ -6,6 +6,7 @@ using infra;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using services;
 using services.Frete;
 
 namespace api.Controllers
@@ -17,13 +18,14 @@ namespace api.Controllers
     {
         private readonly IConsultaEndereco consultaEnderecoService;
         private readonly CalcularFreteService calculoFreteService;
-        
+        private readonly ParametrosService parametrosService;
         
 
-        public UtilController(IConsultaEndereco consultaEnderecoService, CalcularFreteService calculoFreteService)
+        public UtilController(IConsultaEndereco consultaEnderecoService, CalcularFreteService calculoFreteService, ParametrosService parametrosService)
         {
             this.consultaEnderecoService = consultaEnderecoService;
             this.calculoFreteService = calculoFreteService;
+            this.parametrosService = parametrosService;
         }
 
         /// <summary>
@@ -62,6 +64,15 @@ namespace api.Controllers
                     return UnprocessableEntity();
                 return Ok(await calculoFreteService.Calcular(cepDestino));
            }catch{
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("TiposPagamento")]
+        public  ActionResult<Dictionary<string,string>> ConsultarTiposPagamento(){
+            try{
+                return Ok(parametrosService.ObterTiposPagamentos());
+            }catch{
                 return BadRequest();
             }
         }
