@@ -1,5 +1,12 @@
 ## Documentação da sua Solução
 
+### Observações
+Ao cadastrar um novo cliente, o sistema irá gerar de forma automática 03 vales-compra para serem utilizados na validação da rotina de pagamento utilizando vale-compra. Sendo 01 vale-compra já expirado, 01 já utilizado e 01 válido, para possibilitar o teste de alguns cenários.
+
+Para testar o pagamento através de cartão de crédito podem ser utilizados os cartões abaixo, no caso da data de validade do cartão basta ser informado um período superior à data atual e para o código de segurança, um número qualquer de 03 posições, como  087 por exemplo.
+* **4024007153763191** *Cartão válido para o ambiente de teste*
+* **4024007153763192** *Cartão que irá retornar uma compra não autorizada no ambiente de teste*
+
 ### Parametros para teste
 **Teste de Pagamento com Cartão de Crédito**
 ```
