@@ -1,5 +1,22 @@
 ## Documentação da sua Solução
 
+### Parametros para teste
+**Teste de Pagamento com Cartão de Crédito**
+```
+{
+  "Tipo":"CARTAOCREDITO",
+  "ValorCompra":150,
+  "NumeroParcelas":1,
+  "NumeroPedido":2020100801,
+  "NomeCliente":"Arthur André G Castro",
+  "NumeroCartao":"4024007153763191",
+  "ValidadeCartao":"12/2021",
+  "CodigoSeguranca":"087"
+}
+```
+
+
+
 A solução pode ser executada através do docker, utilizando 03 contêineres definidos conforme abaixo: <br/>
 * **API** (*http://localhost:8080*) - Contêiner utilizado para subir a api rest que funciona como backend da solução.
 * **Banco de Dados** - Contêiner utilizado para subir a o banco de dados Postgres na porta *5432*.
