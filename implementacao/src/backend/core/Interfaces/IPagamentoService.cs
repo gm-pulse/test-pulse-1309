@@ -2,11 +2,13 @@ using System.Threading.Tasks;
 using core.Entidades;
 using core.Inputs;
 using core.Results;
+using core.ValueObjects;
 
 namespace core.Interfaces
 {
     public interface IPagamentoService
     {
-         Task<CobrancaResult> Cobrar(PagamentoInput input);
+        string ProviderName { get; }
+         Task<CobrancaResult> Processar(string input);
     }
 }

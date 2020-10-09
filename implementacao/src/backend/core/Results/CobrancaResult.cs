@@ -8,5 +8,6 @@ namespace core.Results
         public DateTime Data { get; set; }
         public float Valor { get; set; }
         public string DetalhesPagamento { get; set; }
+        public string Erro { get; set; }
     }
 }

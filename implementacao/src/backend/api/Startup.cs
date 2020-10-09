@@ -19,6 +19,7 @@ using Microsoft.OpenApi.Models;
 using services;
 using services.Endereco;
 using services.Frete;
+using services.Pagamento;
 
 namespace api
 {
@@ -37,11 +38,19 @@ namespace api
             services.AddScoped<IPasswordVerification,PasswordVerification>();
             services.AddScoped<IConsultaEndereco,ConsultaEnderecoService>();
             services.AddScoped<ClientService>();
+            services.AddScoped<EmailService>();
+
+            //Injeção de dependência dos serviços de frete
             services.AddScoped<IFreteService,CorreioService>();
             services.AddScoped<IFreteService,FedexService>();
             services.AddScoped<IFreteService,JadLogService>();
             services.AddScoped<IFreteService,MercadoEnvioService>();
             services.AddScoped<CalcularFreteService>();
+
+            //Injeção de dependência dos serviços de pagamento
+            services.AddScoped<IPagamentoService,CieloService>();
+            services.AddScoped<IPagamentoService,ValeCompraService>();
+            services.AddScoped<PagamentoService>();
 
             services.AddSwaggerGen(c =>
             {
