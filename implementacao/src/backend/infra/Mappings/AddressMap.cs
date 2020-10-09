@@ -15,11 +15,12 @@ namespace infra.Mappings
                 e.Property(a=>a.Street).HasColumnName("Logradouro").IsRequired();
                 e.Property(a=>a.Complement).HasColumnName("Complemento");
                 e.Property(a=>a.District).HasColumnName("Bairro").IsRequired();
+                e.Property(a=>a.Number).HasColumnName("Numero");
                 e.Property(a=>a.City).HasColumnName("Cidade").IsRequired();
                 e.Property(a=>a.State).HasColumnName("Uf").IsRequired();
                 e.Property(a=>a.ClientId).HasColumnName("IdCliente").IsRequired();
 
-                e.HasOne(a=>a.Client).WithMany(c=>c.Addresses).HasForeignKey(a=>a.ClientId);
+                e.HasOne(a=>a.Client).WithMany(c=>c.Addresses);
 
             });
 

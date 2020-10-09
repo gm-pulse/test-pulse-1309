@@ -7,10 +7,13 @@ namespace infra
     public class PulseTesteContext: DbContext
     {
         public PulseTesteContext(DbContextOptions<PulseTesteContext> options):base(options){
+            //this.Database.EnsureDeleted();
             this.Database.EnsureCreated();
         }
 
         public DbSet<Client> Clients { get; set; }
+
+        public DbSet<Address> Addresses { get; set; }
         public DbSet<Order> Orders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder){
