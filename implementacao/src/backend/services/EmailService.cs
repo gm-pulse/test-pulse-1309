@@ -13,12 +13,12 @@ namespace services
         {
             this.configuration = configuration;
         }
-        public async Task SendMessage(EmailAddress to, string subject, string message){
+        public async Task<Response> SendMessage(EmailAddress to, string subject, string message){
             var apiKey= configuration.GetValue<string>("SendGridApiKey");
             var sendGridClient = new SendGridClient(apiKey);
             var from = new EmailAddress("sac@pulsecommerce.com", "Atendimento ao Cliente");
             var msg = MailHelper.CreateSingleEmail(from, to, subject, string.Empty, message);
-            var response = await sendGridClient.SendEmailAsync(msg);
+            return await sendGridClient.SendEmailAsync(msg);
         }
     }
 }

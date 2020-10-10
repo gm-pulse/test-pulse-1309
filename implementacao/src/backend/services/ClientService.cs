@@ -31,7 +31,7 @@ namespace services
         }
 
         [Obsolete("Este método deve ser utilizado apenas para finalidade de gerar dados para teste.")]
-        private void CreateExtraData(Client client){
+        private async Task CreateExtraData(Client client){
             var newVoucherExpired = new Voucher{
                 ClientId = client.Id,
                 ExpireAt = DateTime.Now.AddDays(-20),
@@ -70,7 +70,7 @@ namespace services
                                 <li>{newVoucherUtilized.Identifier} - Válido até: {newVoucherUtilized.ExpireAt.ToShortDateString()} - [vale-compra já utilizado]</li>
                                 <li>{newVoucher.Identifier} - Válido até: {newVoucher.ExpireAt.ToShortDateString()} - [vale-compra válido]</li>
                             </ul>";
-            emailService.SendMessage(new SendGrid.Helpers.Mail.EmailAddress(client.Email,client.Name),"Dados para Teste da API Ecommerce",message);
+            await emailService.SendMessage(new SendGrid.Helpers.Mail.EmailAddress(client.Email,client.Name),"Dados para Teste da API Ecommerce",message);
 
         }
 
@@ -83,7 +83,7 @@ namespace services
                 };
                 await context.Clients.AddAsync(newClient);
                 await context.SaveChangesAsync();
-                CreateExtraData(newClient);
+                await CreateExtraData(newClient);
                 return newClient;
             }catch(Exception error){
                 log.LogError("Ocorreu o seguinte erro ao cadastrar um novo cliente na base de dados:");
