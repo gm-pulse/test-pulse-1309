@@ -1,5 +1,7 @@
 ## Documentação da sua Solução
 
+### Modelo Banco de Dados
+O modelo do banco de dados pensado para a solucão pode ser encontrado [aqui](/documentacao/diagrama.pdf)
 ### Observações
 Ao cadastrar um novo cliente, o sistema irá gerar de forma automática 03 vales-compra para serem utilizados na validação da rotina de pagamento utilizando vale-compra. Sendo 01 vale-compra já expirado, 01 já utilizado e 01 válido, para possibilitar o teste de alguns cenários.
 
