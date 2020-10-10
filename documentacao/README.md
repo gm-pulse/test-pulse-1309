@@ -1,5 +1,29 @@
 ## Documentação da sua Solução
 
+### Observações
+Ao cadastrar um novo cliente, o sistema irá gerar de forma automática 03 vales-compra para serem utilizados na validação da rotina de pagamento utilizando vale-compra. Sendo 01 vale-compra já expirado, 01 já utilizado e 01 válido, para possibilitar o teste de alguns cenários.
+
+Para testar o pagamento através de cartão de crédito podem ser utilizados os cartões abaixo, no caso da data de validade do cartão basta ser informado um período superior à data atual e para o código de segurança, um número qualquer de 03 posições, como  087 por exemplo.
+* **4024007153763191** *Cartão válido para o ambiente de teste*
+* **4024007153763192** *Cartão que irá retornar uma compra não autorizada no ambiente de teste*
+
+### Parametros para teste
+**Teste de Pagamento com Cartão de Crédito**
+```
+{
+  "Tipo":"CARTAOCREDITO",
+  "ValorCompra":150,
+  "NumeroParcelas":1,
+  "NumeroPedido":2020100801,
+  "NomeCliente":"Arthur André G Castro",
+  "NumeroCartao":"4024007153763191",
+  "ValidadeCartao":"12/2021",
+  "CodigoSeguranca":"087"
+}
+```
+
+
+
 A solução pode ser executada através do docker, utilizando 03 contêineres definidos conforme abaixo: <br/>
 * **API** (*http://localhost:8080*) - Contêiner utilizado para subir a api rest que funciona como backend da solução.
 * **Banco de Dados** - Contêiner utilizado para subir a o banco de dados Postgres na porta *5432*.
