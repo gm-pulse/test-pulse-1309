@@ -6,10 +6,10 @@ namespace infra
 {
     public class PulseTesteContext: DbContext
     {
-        public PulseTesteContext(DbContextOptions<PulseTesteContext> options):base(options){
-            this.Database.EnsureDeleted();
-            this.Database.EnsureCreated();
-        }
+        // public PulseTesteContext(DbContextOptions<PulseTesteContext> options):base(options){
+        //     this.Database.EnsureDeleted();
+        //     this.Database.EnsureCreated();
+        // }
 
         public DbSet<Client> Clients { get; set; }
 
@@ -31,6 +31,7 @@ namespace infra
             modelBuilder.OnPaymentCreating();
             modelBuilder.OnOrderItemCreating();
             modelBuilder.OnProductCreating();
+            modelBuilder.OnDiscountCreating();
         }
     }
 }
