@@ -10,6 +10,7 @@ namespace core.Inputs
 
         public string CodigoValeCompras { get; set; }
         public int CodigoCliente { get; set; }
+        public int CodigoPedido { get; set; }
         public float ValorCompra { get; set; }
 
         public void Validate()

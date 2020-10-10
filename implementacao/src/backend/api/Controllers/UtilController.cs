@@ -18,10 +18,10 @@ namespace api.Controllers
     {
         private readonly IConsultaEndereco consultaEnderecoService;
         private readonly CalcularFreteService calculoFreteService;
-        private readonly ParametrosService parametrosService;
+        private readonly ParametersService parametrosService;
         
 
-        public UtilController(IConsultaEndereco consultaEnderecoService, CalcularFreteService calculoFreteService, ParametrosService parametrosService)
+        public UtilController(IConsultaEndereco consultaEnderecoService, CalcularFreteService calculoFreteService, ParametersService parametrosService)
         {
             this.consultaEnderecoService = consultaEnderecoService;
             this.calculoFreteService = calculoFreteService;

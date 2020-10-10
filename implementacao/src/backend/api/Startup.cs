@@ -39,7 +39,8 @@ namespace api
             services.AddScoped<IConsultaEndereco,ConsultaEnderecoService>();
             services.AddScoped<ClientService>();
             services.AddScoped<EmailService>();
-            services.AddScoped<ParametrosService>();
+            services.AddScoped<ParametersService>();
+            services.AddScoped<VoucherService>();
 
             //Injeção de dependência dos serviços de frete
             services.AddScoped<IFreteService,CorreioService>();
@@ -49,9 +50,9 @@ namespace api
             services.AddScoped<CalcularFreteService>();
 
             //Injeção de dependência dos serviços de pagamento
-            services.AddScoped<IPagamentoService,CieloService>();
-            services.AddScoped<IPagamentoService,ValeCompraService>();
-            services.AddScoped<PagamentoService>();
+            services.AddScoped<IPaymentService,CieloPaymentService>();
+            services.AddScoped<IPaymentService,VoucherPaymentService>();
+            services.AddScoped<PaymentService>();
 
             services.AddSwaggerGen(c =>
             {

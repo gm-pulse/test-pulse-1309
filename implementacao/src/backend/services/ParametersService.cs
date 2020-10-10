@@ -5,7 +5,7 @@ using core.Extensions;
 
 namespace services
 {
-    public class ParametrosService
+    public class ParametersService
     {
         public Dictionary<string,string> ObterTiposPagamentos(){
             return ObjectExtensions.ToDictionary<PagamentoProvider>();

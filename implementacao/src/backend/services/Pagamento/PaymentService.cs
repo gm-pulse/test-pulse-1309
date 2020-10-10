@@ -10,12 +10,12 @@ using Newtonsoft.Json;
 
 namespace services.Pagamento
 {
-    public class PagamentoService
+    public class PaymentService
     {
-        private readonly IEnumerable<IPagamentoService> pagamentoProvider;
-        private readonly ILogger<PagamentoService> log;
+        private readonly IEnumerable<IPaymentService> pagamentoProvider;
+        private readonly ILogger<PaymentService> log;
 
-        public PagamentoService(IEnumerable<IPagamentoService> pagamentoProvider, ILogger<PagamentoService> log)
+        public PaymentService(IEnumerable<IPaymentService> pagamentoProvider, ILogger<PaymentService> log)
         {
             this.pagamentoProvider = pagamentoProvider;
             this.log = log;
@@ -25,7 +25,7 @@ namespace services.Pagamento
             try{
                 var infoPagamento = JsonConvert.DeserializeObject<DadosPagamento>(input);
                 var provedorPagamento = pagamentoProvider.FirstOrDefault(pp=>pp.ProviderName.Equals(infoPagamento.Tipo));
-                return await provedorPagamento.Processar(input);
+                return await provedorPagamento.Process(input);
             }catch(Exception error){
                 log.LogError("Ocorreu um erro ao tentar efetuar o pagamento de um pedido.");
                 log.LogError(error.Message);

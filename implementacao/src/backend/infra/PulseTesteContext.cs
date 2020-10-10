@@ -6,10 +6,10 @@ namespace infra
 {
     public class PulseTesteContext: DbContext
     {
-        // public PulseTesteContext(DbContextOptions<PulseTesteContext> options):base(options){
+        public PulseTesteContext(DbContextOptions<PulseTesteContext> options):base(options){
         //     this.Database.EnsureDeleted();
         //     this.Database.EnsureCreated();
-        // }
+        }
 
         public DbSet<Client> Clients { get; set; }
 
@@ -20,6 +20,7 @@ namespace infra
         public DbSet<PaymentType> PaymentTypes { get; set; }
         public DbSet<Voucher> Vouchers { get; set; }
         public DbSet<Carrier> Carriers { get; set; }
+        public DbSet<Discount> Discounts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder){
             modelBuilder.OnClientCreating();

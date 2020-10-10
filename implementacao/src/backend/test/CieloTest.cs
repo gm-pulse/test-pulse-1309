@@ -13,7 +13,7 @@ namespace test
         [Fact]
         public void ConsigoPagarComCartaoDeCredito()
         {
-            IPagamentoService cieloService = new CieloService();
+            IPaymentService cieloService = new CieloPaymentService();
             var input = new PagamentoCieloInput{
                 Tipo = PagamentoProvider.CARTAO_CREDITO.ToDescriptionString(),
                 NomeCliente = "Rafael V Araujo",
@@ -24,7 +24,7 @@ namespace test
                 ValidadeCartao = "12/2021",
                 CodigoSeguranca ="087"
             };
-            var result = cieloService.Processar(JsonConvert.SerializeObject(input)).Result;
+            var result = cieloService.Process(JsonConvert.SerializeObject(input)).Result;
 
             
             Assert.True(result.Aprovado);
@@ -33,7 +33,7 @@ namespace test
         [Fact]
         public void ConsigoRetornarUmPagmentoNaoAutorizao()
         {
-            IPagamentoService cieloService = new CieloService();
+            IPaymentService cieloService = new CieloPaymentService();
             var input = new PagamentoCieloInput{
                 Tipo = PagamentoProvider.CARTAO_CREDITO.ToDescriptionString(),
                 NomeCliente = "Rafael V Araujo",
@@ -44,7 +44,7 @@ namespace test
                 ValidadeCartao = "12/2021",
                 CodigoSeguranca ="087"
             };
-            var result = cieloService.Processar(JsonConvert.SerializeObject(input)).Result;
+            var result = cieloService.Process(JsonConvert.SerializeObject(input)).Result;
 
             
             Assert.False(result.Aprovado);

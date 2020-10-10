@@ -12,11 +12,11 @@ using services.Util;
 
 namespace services.Pagamento
 {
-    public class CieloService : IPagamentoService
+    public class CieloPaymentService : IPaymentService
     {
         public string ProviderName => PagamentoProvider.CARTAO_CREDITO.ToDescriptionString();
 
-        public async Task<CobrancaResult> Processar(string input)
+        public async Task<CobrancaResult> Process(string input)
         {
             var infoPagamento = JsonConvert.DeserializeObject<PagamentoCieloInput>(input);
             var requestData = infoPagamento.ToPaymentRequest();

@@ -6,9 +6,9 @@ using core.ValueObjects;
 
 namespace core.Interfaces
 {
-    public interface IPagamentoService
+    public interface IPaymentService
     {
         string ProviderName { get; }
-         Task<CobrancaResult> Processar(string input);
+         Task<CobrancaResult> Process(string input);
     }
 }
