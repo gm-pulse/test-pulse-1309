@@ -164,13 +164,10 @@ values
 ('Vale-Compra','VALECOMPRA');
 
 
-insert into public."Descontos" ("Codigo","Valor", "DataValidade","Quantidade")
-values
-('RBWGJL5Y',5,'2020-10-31',10),
-('7USOPBGE',5,'2020-09-30',20),
-('1MRGUIZF',10.5,'2020-11-15',30);
-
 insert into public."Descontos" ("Codigo","Valor", "DataValidade","Quantidade","Utilizados")
 values
+('RBWGJL5Y',5,'2020-10-31',10,0),
+('7USOPBGE',5,'2020-09-30',20,0),
+('1MRGUIZF',10.5,'2020-11-15',30,0),
 ('MJ889P1I',5,'2020-12-31',10,10),
 ('68VXEPBI',7,'2020-12-31',10,9);
