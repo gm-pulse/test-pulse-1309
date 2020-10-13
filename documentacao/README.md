@@ -45,4 +45,8 @@ A ferramenta está disponível através da URL http://localhost:5341 <br/>
 #### Rest API
 O backend da solução proposta está disponível através da seguinte URL: http://localhost:8080 <br/>
 
-![swagger print](/documentacao/img/api.png)
+![swagger print1](/documentacao/img/api1.png)
+![swagger print2](/documentacao/img/api2.png)
+![swagger print3](/documentacao/img/api3.png)
+![swagger print4](/documentacao/img/api4.png)
+![swagger print5](/documentacao/img/api5.png)
